@@ -259,19 +259,22 @@ drone\_sim.py는 가상 드론입니다. 실제 기체가 없어도 프로그램
 
 *코랩은 구글 서버를 잠깐 빌려 쓰는 것이라, 한동안 쓰지 않아 연결(런타임)이 끊기면 올린 파일이 사라집니다. 매번 올리기 번거롭다면 drone\_sim.py를 구글 드라이브의 drone 폴더에 넣어 두고, 노트 처음에 다음 셀을 실행합니다.*
 
+```
 from google.colab import drive  
 drive.mount('/content/drive')                     \# 드라이브 연결(처음에 허용 창이 뜹니다)  
 import sys  
 sys.path.append('/content/drive/MyDrive/drone')   \# drone 폴더에서 모듈을 찾게 하기
-
+```
 **예제 1-1. 가상 드론에 연결하기**
-
+```
 from drone\_sim import \*        \# 가상 드론 불러오기
 
 drone \= Drone()                \# 드론 객체 만들기  
 drone.pair()                   \# 연결하기  
 print("배터리 잔량:", drone.get\_battery(), "%")  
-drone.close()                  \# 연결 닫기  
+drone.close()                  \# 연결 닫기
+```
+
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -336,11 +339,13 @@ drone.close()                  \# 연결 닫기
 변수(variable)는 값에 붙이는 이름입니다. 비행 중에 바뀌는 배터리 잔량이나 높이처럼 달라지는 정보를 다룰 때 씁니다. 파이썬에서는 \= 기호로 오른쪽의 값에 왼쪽의 이름을 붙입니다.
 
 **예제 1-2. 변수에 값 저장하기**
-
+```
 battery \= 87     \# 배터리 잔량  
 height \= 120     \# 높이  
 print(battery)  
-print(height)  
+print(height)
+```
+
 실행 결과
 
 87  
@@ -376,6 +381,7 @@ print(height)
 표 1-5. 파이썬의 기본 자료형
 
 **예제 1-3. 여러 자료형으로 드론 정보 저장하기**
+```
 
 name \= "드론-1호"     \# 문자열  
 battery \= 87          \# 정수  
@@ -385,7 +391,9 @@ is\_flying \= True      \# 논리형
 print(type(name))  
 print(type(battery))  
 print(type(speed))  
-print(type(is\_flying))  
+print(type(is\_flying))
+```
+
 실행 결과
 
 \<class 'str'\>  
@@ -403,13 +411,16 @@ type()은 변수가 가리키는 값이 어떤 자료형인지 알려 주는 함
 필요하면 자료형을 바꿀 수 있습니다. 이를 형 변환이라고 합니다.
 
 **예제 1-4. 형 변환**
+```
 
 battery\_text \= "87"              \# 글자 87  
 battery \= int(battery\_text)       \# 숫자로 바꾸기  
 print(battery \+ 5\)
 
 height \= 120  
-print("고도: " \+ str(height) \+ " cm")   \# 숫자를 글자로 바꿔 이어 붙이기  
+print("고도: " \+ str(height) \+ " cm")   \# 숫자를 글자로 바꿔 이어 붙이기
+```
+
 실행 결과
 
 92  
@@ -420,6 +431,7 @@ print("고도: " \+ str(height) \+ " cm")   \# 숫자를 글자로 바꿔 이어
 이제 배운 내용을 모아 드론의 상태를 한눈에 보여 주는 프로그램을 만들어 봅시다. 여러 값을 섞어 출력할 때는 f-문자열을 쓰면 편리합니다. 문자열 앞에 f를 붙이고 중괄호 { } 안에 변수 이름을 적으면 그 자리에 값이 들어갑니다.
 
 **예제 1-5. 드론 상태 표시판**
+```
 
 from drone\_sim import \*
 
@@ -437,7 +449,9 @@ print(f" 배터리    : {battery} %")
 print(f" 높이      : {height} cm")  
 print(f" 비행 중   : {is\_flying}")  
 print("=" \* 28\)  
-drone.close()  
+drone.close()
+```
+
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -512,6 +526,7 @@ drone.close()
 드론의 비행 시간과 배터리 소모량은 사양서의 숫자로 예측할 수 있습니다. 코드론에듀는 한 번 충전으로 7\~8분을 납니다(표 1-1). 가운데값인 7.5분을 날며 100%를 쓴다고 보면, 1초에 몇 %를 쓰는지 계산할 수 있습니다.
 
 **예제 1-6. 비행 시간과 배터리 소모량 계산**
+```
 
 distance \= 300                         \# 비행 거리(cm)  
 speed \= 50                             \# 속도(cm/s)  
@@ -525,7 +540,9 @@ left \= 100 \- used                      \# 남는 배터리(%)
 print(f"1초당 소모 : {use\_per\_sec} %")  
 print(f"비행 시간 : {time} 초")  
 print(f"배터리 소모 : {used} %")  
-print(f"남는 배터리 : {left} %")  
+print(f"남는 배터리 : {left} %")
+```
+
 실행 결과
 
 1초당 소모 : 0.2222222222222222 %  
@@ -576,6 +593,7 @@ print(f"예상 비행 시간은 {round(time, 1)} 초입니다.")
 논리 연산자는 여러 조건을 묶을 때 씁니다. and는 모두 참일 때, or는 하나라도 참일 때 참이 되며, not은 참과 거짓을 뒤집습니다.
 
 **예제 1-8. 비행 가능 여부 판단하기**
+```
 
 battery \= 87     \# 배터리 잔량(%)  
 wind \= 3.2       \# 풍속(m/s)
@@ -587,6 +605,7 @@ can\_fly \= battery\_ok and wind\_ok    \# 둘 다 만족해야 비행 가능
 print("배터리 조건:", battery\_ok)  
 print("바람 조건  :", wind\_ok)  
 print("비행 가능  :", can\_fly)  
+```
 실행 결과
 
 배터리 조건: True  
@@ -658,6 +677,7 @@ else:
 조건이 셋 이상일 때는 elif를 씁니다. 위에서부터 차례로 검사해 처음으로 참이 되는 곳만 실행하고 나머지는 건너뜁니다.
 
 **예제 1-10. 배터리 상태를 단계로 나누기**
+```
 
 battery \= 45
 
@@ -669,6 +689,7 @@ elif battery \>= 20:
     print("주의: 복귀를 준비하세요.")  
 else:  
     print("위험: 이륙하지 마세요.")  
+```
 실행 결과
 
 보통: 짧은 거리만 비행하세요.  
@@ -683,6 +704,7 @@ else:
 같은 동작을 정해진 횟수만큼 되풀이할 때는 for를 씁니다. range(4)는 0, 1, 2, 3의 네 값을 차례로 내어 주므로 네 번 반복합니다.
 
 **예제 1-11. 사각형 경로 비행**
+```
 
 from drone\_sim import \*
 
@@ -697,6 +719,7 @@ for i in range(4):            \# 네 번 반복
 print("최종 위치:", drone.get\_pos\_x(), drone.get\_pos\_y())  
 drone.land()  
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -719,6 +742,7 @@ drone.close()
 횟수가 정해져 있지 않고 어떤 조건을 만족하는 동안 반복할 때는 while을 씁니다.
 
 **예제 1-12. 배터리가 충분한 동안 비행하기**
+```
 
 from drone\_sim import \*
 
@@ -734,6 +758,7 @@ while drone.get\_battery() \>= 30:   \# 배터리가 30 % 이상인 동안
 print("배터리가 30 % 아래로 내려가 착륙합니다.")  
 drone.land()  
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 32 %  
@@ -759,6 +784,7 @@ drone.close()
 
 **예제 1-13. 경유지 목록 다루기**
 
+```
 points \= \["창고", "공원", "학교", "병원"\]
 
 print("경유지 수:", len(points))  
@@ -767,6 +793,7 @@ print("마지막   :", points\[-1\])
 
 points.append("소방서")      \# 맨 뒤에 추가  
 print("추가 후  :", points)  
+```
 실행 결과
 
 경유지 수: 4  
@@ -780,6 +807,7 @@ print("추가 후  :", points)
 리스트는 for와 함께 쓸 때 힘을 발휘합니다. 값을 하나씩 꺼내 같은 처리를 할 수 있습니다.
 
 **예제 1-14. 구간을 순서대로 비행하기**
+```
 
 from drone\_sim import \*
 
@@ -794,6 +822,7 @@ for distance in plan:
 drone.land()  
 drone.close()  
 print("비행 구간 수:", len(plan))  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -816,6 +845,7 @@ print("비행 구간 수:", len(plan))
 
 **예제 1-15. 비행 기록을 딕셔너리로 저장하기**
 
+```
 record \= {"시간": 12.5, "고도": 120, "배터리": 87, "위치": (100, 50)}
 
 print("고도:", record\["고도"\], "cm")  
@@ -824,6 +854,7 @@ record\["풍속"\] \= 3.2      \# 항목 추가
 
 for key in record:  
     print(f"{key} : {record\[key\]}")  
+```
 실행 결과
 
 고도: 120 cm  
@@ -891,6 +922,7 @@ for key in record:
 
 **예제 1-16. 첫 비행**
 
+```
 from drone\_sim import \*        \# 실기체: from codrone\_edu.drone import \*
 
 drone \= Drone()      \# 드론 객체 만들기  
@@ -899,6 +931,7 @@ drone.takeoff()      \# 이륙
 drone.hover(3)       \# 3초 동안 제자리 비행  
 drone.land()         \# 착륙  
 drone.close()        \# 연결 닫기  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -943,6 +976,7 @@ drone.close()        \# 연결 닫기
 
 **예제 1-17. 단위와 속도 바꾸기**
 
+```
 from drone\_sim import \*
 
 drone \= Drone()  
@@ -957,6 +991,7 @@ drone.move\_left(20, "mm")             \# 없는 단위를 넣으면?
 print("앞뒤 위치:", drone.get\_pos\_x(), "cm")  
 drone.land()  
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -986,6 +1021,7 @@ Error: Not a valid unit.
 
 **예제 1-18. 칠각형 비행**
 
+```
 from drone\_sim import \*
 
 drone \= Drone()  
@@ -1003,6 +1039,7 @@ for i in range(sides):
 print("처음 방향과의 차이:", drone.get\_angle\_z(), "도")  
 drone.land()  
 drone.close()  
+```
 실행 결과(가운데 다섯 번 반복 생략)
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -1040,6 +1077,7 @@ set\_으로 시작하는 함수는 값을 저장만 하고 드론을 움직이�
 
 **예제 1-19. 바람이 불 때와 불지 않을 때**
 
+```
 from drone\_sim import \*
 
 drone \= Drone()  
@@ -1056,6 +1094,7 @@ for wind in \[0, 3\]:
     drone.land()
 
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -1086,6 +1125,7 @@ drone.close()
 표 1-12. 상태를 알려 주는 함수
 
 **예제 1-20. 배터리를 확인하며 구간 비행하기**
+```
 
 from drone\_sim import \*
 
@@ -1113,6 +1153,7 @@ else:
 
 drone.sim\_save\_log()                  \# 가상 전용: 비행 기록을 CSV 로 저장  
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 38 %  
@@ -1152,7 +1193,10 @@ enumerate(plan, 1)은 리스트의 값과 함께 1부터 시작하는 번호를 
 3. File → Settings(맥은 PyCharm → Settings) → Project → Python Interpreter에서 \+ 단추를 누르고, codrone-edu를 검색해 설치합니다.  
 4. main.py에 아래 한 줄을 적고 실행합니다. 오류가 없으면 라이브러리가 제대로 설치된 것입니다. 아직 드론을 연결할 필요는 없습니다.
 
-from codrone\_edu.drone import \*  
+```
+from codrone\_edu.drone import \*
+```
+
 main.py가 만들어지지 않았다면 프로젝트 이름을 마우스 오른쪽 단추로 누르고 New → Python File을 고릅니다.
 
 #### **③ 조종기와 연결**
@@ -1170,6 +1214,7 @@ main.py가 만들어지지 않았다면 프로젝트 이름을 마우스 오른�
 첫 코드에서는 드론을 띄우지 않습니다. 불빛을 켜고 소리를 내 연결만 확인합니다. 코드를 입력하고 파이참 위쪽의 초록색 삼각형을 누릅니다. 코드의 아무 곳이나 마우스 오른쪽 단추로 눌러 Run을 골라도 됩니다.
 
 **예제 1-21. 연결 확인하기 (파이참, 실기체)**
+```
 
 from codrone\_edu.drone import \*
 
@@ -1180,6 +1225,7 @@ drone.drone\_buzzer(Note.C4, 1000\)        \# 도 1초
 drone.drone\_buzzer(Note.D4, 1000\)        \# 레 1초  
 drone.drone\_buzzer(Note.E4, 1000\)        \# 미 1초  
 drone.close()  
+```
 드론에 흰 불이 켜지고 도·레·미가 들리면 성공입니다. 오류가 나면 드론과 조종기가 제대로 연결되었는지 다시 확인합니다.
 
 #### **⑤ 페어링과 출력**
@@ -1187,6 +1233,7 @@ drone.close()
 프로그램이 어디까지 실행되었는지 알고 싶을 때 print()를 사이사이에 넣습니다. 멈춘 곳 바로 앞의 print까지만 출력되므로, 어느 줄에서 문제가 생겼는지 바로 보입니다.
 
 **예제 1-22. 페어링 단계 출력하기 (파이참, 실기체)**
+```
 
 from codrone\_edu.drone import \*
 
@@ -1196,6 +1243,7 @@ print("페어링 준비")
 drone.pair()  
 print("페어링 성공\!")  
 drone.close()  
+```
 ***짚고 가기** import 줄을 빠뜨리면*
 
 *파이참은 Drone 아래에 빨간 물결선을 그어 알려 줍니다. Drone이 무엇인지 파이썬이 모르기 때문입니다. 파일마다 첫 줄에 from codrone\_edu.drone import \*를 씁니다.*
@@ -1238,6 +1286,7 @@ drone.close()
 크기만 다른 사각형을 두 번 날리려면 예제 1-11의 for문을 두 번 써야 합니다. 이럴 때 def로 동작 묶음에 이름을 붙여 두면, takeoff()처럼 이름만 불러 몇 번이고 다시 쓸 수 있습니다. 괄호 안의 length는 부를 때마다 넣는 값을 받는 자리입니다.
 
 **예제 1-23. 사각형 비행을 함수로 묶어 다시 쓰기**
+```
 
 from drone\_sim import \*
 
@@ -1256,6 +1305,7 @@ fly\_square(60)                     \# 한 변 60 cm, 같은 함수를 다시 �
 print("제자리로 돌아왔나요?", drone.get\_pos\_x(), drone.get\_pos\_y())  
 drone.land()  
 drone.close()  
+```
 실행 결과(가운데 반복 생략)
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -1366,6 +1416,7 @@ def fly\_square(length):는 '이제부터 fly\_square라는 이름으로 아래 
 라이브러리는 import로 불러옵니다. 불러오는 방법은 세 가지입니다.
 
 **예제 2-1. 세 가지 불러오기 방법**
+```
 
 import math                 \# 방법 1: 통째로  
 print(math.sqrt(16))
@@ -1375,6 +1426,7 @@ print(sqrt(25))
 
 import math as m            \# 방법 3: 짧은 이름으로  
 print(m.pi)  
+```
 실행 결과
 
 4.0  
@@ -1389,6 +1441,7 @@ print(m.pi)
 두 지점의 좌표를 알 때 직선거리는 피타고라스 정리로 구합니다. math.sqrt()는 제곱근을, math.dist()는 두 점 사이의 거리를 바로 구해 줍니다.
 
 **예제 2-2. 경유지 사이의 거리 구하기**
+```
 
 import math
 
@@ -1422,6 +1475,7 @@ end \= time.time()                \# 끝난 시각 기록
 
 print("합계:", total)  
 print("걸린 시간이 0.5초보다 짧은가?", (end \- start) \< 0.5)  
+```
 실행 결과
 
 합계: 5000050000  
@@ -1435,6 +1489,7 @@ print("걸린 시간이 0.5초보다 짧은가?", (end \- start) \< 0.5)
 Ⅰ단원에서 sim\_save\_log()로 저장한 flight\_log.csv 파일을 열어 봅시다. CSV는 값을 쉼표로 구분해 저장하는 가장 단순한 표 형식 파일입니다. 코랩에서 저장한 파일은 왼쪽 파일 창에 나타납니다.
 
 **예제 2-4. 비행 기록 파일 읽어 보기**
+```
 
 from drone\_sim import \*  
 import csv
@@ -1447,6 +1502,7 @@ drone.move\_forward(200)
 drone.land()  
 drone.sim\_save\_log()          \# 가상 전용  
 drone.close()
+```
 
 \# 저장된 파일을 읽는다  
 with open("flight\_log.csv", encoding="utf-8-sig") as f:  
@@ -1472,11 +1528,14 @@ with open(...)은 파일을 열고 작업이 끝나면 자동으로 닫아 주�
 ### **■ 6\. 외부 라이브러리 설치하기**
 
 다음 소단원부터 쓸 pandas와 matplotlib는 외부 라이브러리입니다. 코랩에는 이 두 라이브러리가 미리 설치되어 있어 바로 import하면 됩니다. 설치되어 있지 않은 라이브러리는 코드 셀에 느낌표(\!)를 붙여 설치합니다. 파이참에서는 1-5에서 codrone-edu를 설치한 것처럼 Settings의 Python Interpreter 메뉴를 씁니다.
+```
 
 \!pip install codrone-edu        \# 코랩: \! 는 '파이썬이 아니라 명령어로 실행'이라는 표시
 
 import pandas as pd  
-print(pd.\_\_version\_\_)          \# 설치된 버전 확인  
+print(pd.\_\_version\_\_)          \# 설치된 버전 확인
+ ```
+
 코랩에도 드론 라이브러리는 설치됩니다. 다만 1-1에서 살펴본 것처럼 조종기를 볼 수 없어서 drone.pair()에서 멈춥니다. 설치되는 것과 쓸 수 있는 것은 다릅니다. 코랩에서 설치한 라이브러리는 올린 파일처럼 런타임이 끊기면 사라집니다. 노트 맨 위에 설치 셀을 모아 두면 다음 시간에 한 번에 다시 실행할 수 있습니다.
 
 ***안전 수칙** 설치할 때 지킬 것*
@@ -1553,6 +1612,7 @@ print(pd.\_\_version\_\_)          \# 설치된 버전 확인
 pandas는 보통 pd라는 줄임말로 불러옵니다. read\_csv()로 파일을 읽으면 데이터프레임이 만들어집니다.
 
 **예제 2-5. 비행 기록 불러오기**
+```
 
 from drone\_sim import \*  
 import pandas as pd
@@ -1569,7 +1629,9 @@ drone.sim\_save\_log()        \# 가상 전용
 drone.close()
 
 df \= pd.read\_csv("flight\_log.csv")  
-print(df)  
+print(df)
+```
+
 실행 결과(비행 안내문 생략)
 
       시간            동작      x      y     z     방향    배터리   풍속  
@@ -1589,6 +1651,7 @@ print(df)
 데이터가 많을 때는 전부 출력하지 않고 일부만 살펴봅니다.
 
 **예제 2-6. 데이터 살펴보기**
+```
 
 import pandas as pd
 
@@ -1598,6 +1661,7 @@ print("열 이름:", list(df.columns))
 print()  
 print("--- 처음 3줄 \---")  
 print(df.head(3))  
+```
 실행 결과
 
 행과 열의 수: (11, 8\)  
@@ -1628,6 +1692,7 @@ print(df.head(3))
 열은 대괄호 안에 열 이름을 적어 꺼냅니다. 여러 열을 꺼낼 때는 열 이름의 리스트를 넣으므로 대괄호가 두 번 겉칩니다.
 
 **예제 2-7. 필요한 열만 꺼내기**
+```
 
 import pandas as pd
 
@@ -1637,6 +1702,7 @@ print(df\["배터리"\].head(3))
 print()  
 print("--- 시간과 배터리 두 열 \---")  
 print(df\[\["시간", "배터리"\]\].head(3))  
+```
 실행 결과
 
 \--- 배터리 열만 \---  
@@ -1656,6 +1722,7 @@ Name: 배터리, dtype: float64
 대괄호 안에 조건을 넣으면 조건을 만족하는 행만 골라낼 수 있습니다. 이를 필터링이라고 합니다.
 
 **예제 2-8. 앞으로 간 기록만 골라내기**
+```
 
 import pandas as pd
 
@@ -1665,6 +1732,7 @@ print(forward\[\["시간", "동작", "배터리"\]\])
 
 low \= df\[df\["배터리"\] \< 98\]  
 print("\\n배터리가 98 % 미만인 기록 수:", len(low))  
+```
 실행 결과
 
      시간            동작   배터리  
@@ -1678,20 +1746,24 @@ df\["동작"\] \== "move\_forward"는 줄마다 True인지 False인지를 담은
 ***한 걸음 더** 조건을 두 개 이상 쓸 때*
 
 *파이썬의 and, or 대신 &(그리고), \|(또는)를 쓰고, 조건마다 반드시 소괄호로 묶습니다.*
+```
 
 df\[(df\["동작"\] \== "move\_forward") & (df\["배터리"\] \> 97)\]
+```
 
 ### **■ 5\. 정렬하기**
 
 sort\_values()로 특정 열을 기준으로 줄을 세울 수 있습니다. ascending=False를 넣으면 큰 값부터 내림차순으로 정렬됩니다.
 
 **예제 2-9. 배터리가 적게 남은 순서로 정렬**
+```
 
 import pandas as pd
 
 df \= pd.read\_csv("flight\_log.csv")  
 sorted\_df \= df.sort\_values("배터리")  
 print(sorted\_df\[\["시간", "동작", "배터리"\]\].head(3))  
+```
 실행 결과
 
       시간            동작   배터리  
@@ -1705,6 +1777,7 @@ print(sorted\_df\[\["시간", "동작", "배터리"\]\].head(3))
 여러 값을 하나의 수로 요약하는 것을 집계라고 합니다. 평균, 최댓값, 최솟값, 합계 등을 구할 수 있습니다.
 
 **예제 2-10. 비행 데이터 요약하기**
+```
 
 import pandas as pd
 
@@ -1716,6 +1789,7 @@ print("마지막 배터리:", df\["배터리"\].min(), "%")
 print("사용한 배터리:", round(df\["배터리"\].max() \- df\["배터리"\].min(), 1), "%")  
 print("동작별 횟수  :")  
 print(df\["동작"\].value\_counts())  
+```
 실행 결과
 
 총 비행 시간 : 16.6 초  
@@ -1793,6 +1867,7 @@ value\_counts()는 같은 값이 몇 번 나왔는지 셍니다. 앞으로 가�
 현실의 데이터는 깨끗하지 않습니다. 센서가 잠시 멈춰 값이 비거나, 고장으로 말이 안 되는 값이 기록되기도 합니다. 단위가 글자와 붙어 있어 숫자로 계산되지 않는 열도 있습니다. 이런 자료를 그대로 분석하면 잘못된 결론에 이릅니다. 분석에 앞서 데이터를 정리하는 일을 전처리라고 합니다.
 
 **예제 2-11. 문제가 있는 기상 데이터 만들기**
+```
 
 import pandas as pd
 
@@ -1805,6 +1880,7 @@ data \= {
 df \= pd.DataFrame(data)  
 df.to\_csv("weather.csv", index=False, encoding="utf-8-sig")  
 print(df)  
+```
 실행 결과
 
       날짜     풍속  강수량   기온  
@@ -1819,6 +1895,7 @@ print(df)
 ### **■ 3\. 문제 찾아내기**
 
 **예제 2-12. 빠진 값과 요약 통계 확인하기**
+```
 
 import pandas as pd
 
@@ -1828,6 +1905,7 @@ print(df.isna().sum())
 print()  
 print("--- 풍속 열의 요약 \---")  
 print(df\["풍속"\].describe())  
+```
 실행 결과
 
 \--- 열별 빠진 값의 수 \---  
@@ -1856,6 +1934,7 @@ Name: 풍속, dtype: float64
 이상값은 기준을 정해 걸러냅니다. 여기서는 풍속이 30 m/s를 넘는 값을 기록 오류로 보겠습니다. 기상청은 풍속 14 m/s(순간풍속 20 m/s) 이상이 예상될 때 강풍주의보를 내립니다. 하루 평균 풍속이 30 m/s를 넘는 날은 매우 드물게 강한 태풍이 아니면 나타나기 어렵습니다. 걸러낸 값은 지우거나, 빠진 값으로 바꾼 뒤 함께 처리합니다.
 
 **예제 2-13. 이상값을 결측값으로 바꾸기**
+```
 
 import pandas as pd
 
@@ -1863,6 +1942,7 @@ df \= pd.read\_csv("weather.csv")
 df.loc\[df\["풍속"\] \> 30, "풍속"\] \= None     \# 30 초과는 기록 오류로 보고 비움  
 print(df\[\["날짜", "풍속"\]\])  
 print("\\n이상값 처리 후 평균 풍속:", round(df\["풍속"\].mean(), 2), "m/s")  
+```
 실행 결과
 
       날짜   풍속  
@@ -1888,6 +1968,7 @@ print("\\n이상값 처리 후 평균 풍속:", round(df\["풍속"\].mean(), 2),
 표 2-4. 결측값을 다루는 두 가지 방법
 
 **예제 2-14. 두 가지 방법 비교하기**
+```
 
 import pandas as pd
 
@@ -1903,6 +1984,7 @@ fill\_df\["강수량"\] \= fill\_df\["강수량"\].fillna(0)
 print("채운 후 남은 줄 수:", len(fill\_df))  
 print()  
 print(fill\_df\[\["날짜", "풍속", "강수량"\]\])  
+```
 실행 결과
 
 삭제 후 남은 줄 수: 3  
@@ -1922,6 +2004,7 @@ print(fill\_df\[\["날짜", "풍속", "강수량"\]\])
 기온 열은 18℃처럼 단위가 붙어 있어서 글자로 저장되었습니다. 이 상태로는 평균을 구할 수 없습니다. astype(float)로 바로 바꾸려 하면 ValueError: could not convert string to float: '18℃' 오류가 납니다. 문자 ℃를 먼저 지우고 바꿔야 합니다.
 
 **예제 2-15. 단위를 지우고 숫자로 바꾸기**
+```
 
 import pandas as pd
 
@@ -1931,6 +2014,7 @@ print("바꾸기 전:", df\["기온"\].dtype)
 df\["기온"\] \= df\["기온"\].str.replace("℃", "").astype(float)  
 print("바꾼 후  :", df\["기온"\].dtype)  
 print("평균 기온:", round(df\["기온"\].mean(), 1), "도")  
+```
 실행 결과
 
 바꾸기 전: str  
@@ -2008,6 +2092,7 @@ print("평균 기온:", round(df\["기온"\].mean(), 1), "도")
 기준을 정하고 그 기준으로 데이터를 걸러내면 비행할 수 있는 날을 가려낼 수 있습니다. 여기서는 풍속 5 m/s 이하, 강수량 0 mm를 기준으로 삼습니다. 아래 날씨 값은 연습을 위해 만든 것입니다.
 
 **예제 2-16. 비행 가능일 찾기**
+```
 
 import pandas as pd
 
@@ -2026,6 +2111,7 @@ print(df)
 ok \= df\[df\["비행가능"\]\]  
 print("\\n비행 가능한 날:", len(ok), "일 /", len(df), "일")  
 print("해당 날짜:", list(ok\["날짜"\]))  
+```
 실행 결과
 
       날짜   풍속   강수량    기온   비행가능  
@@ -2051,6 +2137,7 @@ print("해당 날짜:", list(ok\["날짜"\]))
 같은 거리를 날더라도 속도에 따라 비행 시간과 배터리 소모가 달라집니다. 느리게 가면 배터리를 아낄까요, 빨리 가면 아낄까요? 예상을 적어 둔 뒤 가상 드론으로 3 m를 세 가지 속도로 날아 보고, 그 기록을 데이터프레임으로 만들어 비교합니다.
 
 **예제 2-17. 속도에 따른 효율 비교**
+```
 
 from drone\_sim import \*  
 import pandas as pd
@@ -2076,6 +2163,7 @@ print(df)
 
 best \= df.sort\_values("효율", ascending=False).iloc\[0\]  
 print("\\n효율이 가장 좋은 속도:", best\["속도"\], "m/s")  
+```
 실행 결과
 
     속도   비행시간  배터리소모     효율  
@@ -2103,6 +2191,7 @@ print("\\n효율이 가장 좋은 속도:", best\["속도"\], "m/s")
 분석 결과를 모아 운항 계획을 세워 봅시다. 좋은 계획에는 결론과 함께 그 근거가 들어 있습니다. 1초당 배터리 소모량은 1-3의 예제 1-6과 같은 방법으로 구합니다.
 
 **예제 2-18. 분석 결과로 운항 계획 요약하기**
+```
 
 import pandas as pd
 
@@ -2126,6 +2215,7 @@ print(f" 왕복 거리  : {DISTANCE} cm, 속도 {SPEED} cm/s")
 print(f" 소요 시간  : {need\_time} 초")  
 print(f" 필요 배터리: {need\_battery} % (여유분 20 % 별도)")  
 print(f" 비행 가능일: {days}")  
+```
 실행 결과
 
 \[운항 계획 요약\]  
@@ -2241,6 +2331,7 @@ print(f" 비행 가능일: {days}")
 표 3-2. 비행 시나리오 설계 예시
 
 **예제 3-1. 배송 시나리오 시뮬레이션**
+```
 
 from drone\_sim import \*
 
@@ -2258,6 +2349,7 @@ drone.land()
 print("총 비행 시간 :", drone.sim\_log\[-1\]\["시간"\], "초")    \# 가상 전용  
 print("남은 배터리  :", drone.get\_battery(), "%")  
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -2286,6 +2378,7 @@ drone.close()
 *속도와 바람을 동시에 바꾸면, 결과가 달라졌을 때 무엇 때문인지 알 수 없습니다. 속도를 비교할 때는 바람을 고정하고, 바람을 비교할 때는 속도를 고정합니다. 과학 실험에서 변인을 통제하는 것과 같은 원리입니다.*
 
 **예제 3-2. 속도를 바꿔 가며 실험하기**
+```
 
 from drone\_sim import \*
 
@@ -2310,6 +2403,7 @@ for speed in \[0.3, 0.5, 0.8\]:
 
 for r in results:  
     print(r)  
+```
 실행 결과
 
 {'속도': 0.3, '비행시간': 32.33, '배터리소모': 7.7, '도착위치': (0.0, \-0.0)}  
@@ -2322,6 +2416,7 @@ x, y \= … 처럼 쉼표로 이어 쓰면 값 두 개를 한 줄에 담을 수 
 이번에는 속도를 고정하고 바람만 바꿔 봅시다. 가상 드론은 바람이 불면 배터리를 더 쓰고 오른쪽으로 밀리도록 만들어져 있습니다.
 
 **예제 3-3. 바람을 바꿔 가며 실험하기**
+```
 
 from drone\_sim import \*
 
@@ -2341,6 +2436,7 @@ for wind in \[0, 2, 4, 6\]:
     used \= round(100 \- drone.sim\_log\[-1\]\["배터리"\], 1\)  
     print({"바람": wind, "배터리소모": used, "도착위치": (x, y), "출발지와의거리": away})  
     drone.close()  
+```
 실행 결과
 
 {'바람': 0, '배터리소모': 5.8, '도착위치': (0.0, \-0.0), '출발지와의거리': 0.0}  
@@ -2354,6 +2450,7 @@ for wind in \[0, 2, 4, 6\]:
 여러 번 실행한 결과는 데이터프레임으로 모으면 비교하기 쉽고, 다음 소단원에서 그래프로 나타내기에도 좋습니다. 이번에는 for문 안에 for문을 하나 더 넣어 속도 3가지와 바람 3가지를 모두 조합합니다.
 
 **예제 3-4. 실험 결과를 표로 정리하고 저장하기**
+```
 
 from drone\_sim import \*  
 import pandas as pd
@@ -2382,6 +2479,7 @@ for speed in \[0.3, 0.5, 0.8\]:
 df \= pd.DataFrame(results)  
 df.to\_csv("sim\_result.csv", index=False, encoding="utf-8-sig")  
 print(df)  
+```
 실행 결과
 
     속도  바람   비행시간  배터리소모   이탈거리  
@@ -2459,6 +2557,7 @@ print(df)
 ### **■ 3\. 막대그래프로 비교하기**
 
 **예제 3-5. 속도별 비행 시간 비교**
+```
 
 import pandas as pd  
 import matplotlib.pyplot as plt  
@@ -2476,6 +2575,7 @@ plt.tight\_layout()
 plt.savefig("graph\_speed.png", dpi=150)  
 print("그래프를 graph\_speed.png 로 저장했습니다.")  
 print(calm\[\["속도", "비행시간"\]\])  
+```
 실행 결과
 
 그래프를 graph\_speed.png 로 저장했습니다.  
@@ -2496,6 +2596,7 @@ print(calm\[\["속도", "비행시간"\]\])
 비행하는 동안 배터리가 어떻게 줄어드는지 보려면 꺾은선그래프가 알맞습니다.
 
 **예제 3-6. 시간에 따른 배터리 변화**
+```
 
 from drone\_sim import \*  
 import pandas as pd  
@@ -2522,6 +2623,7 @@ plt.grid(True, linewidth=0.5)
 plt.tight\_layout()  
 plt.savefig("graph\_battery.png", dpi=150)  
 print("저장 완료. 마지막 배터리:", df\["배터리"\].iloc\[-1\], "%")  
+```
 실행 결과
 
 저장 완료. 마지막 배터리: 94.2 %  
@@ -2536,6 +2638,7 @@ print("저장 완료. 마지막 배터리:", df\["배터리"\].iloc\[-1\], "%")
 서로 다른 조건의 결과를 같은 그래프에 겹쳐 그리면 차이가 분명히 드러납니다.
 
 **예제 3-7. 바람에 따른 배터리 소모 비교**
+```
 
 import pandas as pd  
 import matplotlib.pyplot as plt  
@@ -2554,6 +2657,7 @@ plt.grid(True, linewidth=0.5)
 plt.tight\_layout()  
 plt.savefig("graph\_wind.png", dpi=150)  
 print(df.pivot(index="바람", columns="속도", values="배터리소모"))  
+```
 실행 결과
 
 속도   0.3  0.5  0.8  
@@ -2640,6 +2744,7 @@ for speed, mark in \[(0.3, "o"), …\]는 튜플 리스트에서 속도와 점 �
 지도 위의 두 지점을 좌표로 나타내면 거리와 방향을 계산할 수 있습니다. 여기서는 이해를 돕기 위해 가로·세로가 km인 평면 좌표를 씁니다. 2-1에서 배운 math.dist()를 다시 씁니다.
 
 **예제 3-8. 거점에서 배송지까지의 거리**
+```
 
 import math
 
@@ -2655,6 +2760,7 @@ for name, xy in points.items():
         continue                  \# 거점 자신은 건너뛴다  
     d \= math.dist(base, xy)  
     print(f"거점A → {name} : {round(d, 2)} km")  
+```
 실행 결과
 
 거점A → 배송지1 : 3.26 km  
@@ -2667,6 +2773,7 @@ for name, xy in points.items():
 여러 지점을 차례로 들르는 경로의 총 거리는 이웃한 두 지점 사이의 거리를 모두 더해 구합니다.
 
 **예제 3-9. 배송 경로의 총 거리**
+```
 
 import math
 
@@ -2682,6 +2789,7 @@ for i in range(len(route) \- 1):
 print("-" \* 30\)  
 print("총 비행 거리:", round(total, 2), "km")  
 print("속도 10 m/s 로 날면", round(total \* 1000 / 10 / 60, 1), "분 걸린다")  
+```
 실행 결과
 
 거점A → 배송지1 : 3.26 km  
@@ -2698,6 +2806,7 @@ print("속도 10 m/s 로 날면", round(total \* 1000 / 10 / 60, 1), "분 걸린
 경로가 제한 구역을 지나가는지 확인해야 합니다. 제한 구역을 중심과 반지름을 가진 원으로 단순하게 나타내면, 어떤 지점이 그 안에 있는지 거리로 판단할 수 있습니다. 중심까지의 거리가 반지름보다 작으면 안입니다.
 
 **예제 3-10. 제한 구역 안에 있는지 확인하기**
+```
 
 import math
 
@@ -2709,6 +2818,7 @@ for name, xy in points.items():
     gap \= math.dist(xy, center) \- radius    \# 경계까지 남은 거리  
     state \= "제한 구역 안" if gap \<= 0 else "비행 가능"  
     print(f"{name:6s} {state:8s} (경계까지 {round(gap, 2)} km)")  
+```
 실행 결과
 
 거점A    비행 가능    (경계까지 4.27 km)  
@@ -2724,6 +2834,7 @@ for name, xy in points.items():
 숫자만으로는 경로의 모양을 알기 어렵습니다. 좌표를 그림으로 나타내면 경로와 제한 구역의 관계가 한눈에 보입니다.
 
 **예제 3-11. 비행 경로 그림 그리기**
+```
 
 import matplotlib.pyplot as plt  
 import font\_setup
@@ -2751,6 +2862,7 @@ ax.grid(True, linewidth=0.5)
 plt.tight\_layout()  
 plt.savefig("map\_route.png", dpi=150)  
 print("지도를 map\_route.png 로 저장했습니다.")  
+```
 실행 결과
 
 지도를 map\_route.png 로 저장했습니다.  
@@ -2767,6 +2879,7 @@ print("지도를 map\_route.png 로 저장했습니다.")
 이번에는 진짜 지도 위에 그려 봅시다. folium은 위도·경도를 넣으면 인터넷 지도 위에 표시해 주는 라이브러리로, 코랩에 설치되어 있습니다. 공항 주변의 관제권은 비행 승인이 필요한 대표적인 구역입니다(항공안전법 제127조). 관제권은 보통 공항 중심에서 반지름 9.3 km입니다.
 
 **예제 3-12. 공항 관제권 지도 그리기**
+```
 
 import folium
 
@@ -2780,6 +2893,7 @@ folium.Circle(airport, radius=9300,         \# 반지름 단위는 m
 folium.CircleMarker(airport, radius=9300 / 1000, color="blue").add\_to(m)   \# 비교용: 화면 픽셀 단위  
 m.save("airport\_map.html")  
 m  
+```
 코랩에서는 마지막 줄의 m이 셀 아래에 지도를 바로 띄웁니다. 지도를 확대·축소해 보세요. 빨간 원은 지도를 키우면 함께 커지고, 파란 원은 언제나 같은 크기로 보입니다.
 
 ***짚고 가기** Circle과 CircleMarker는 반지름의 단위가 다릅니다.*
@@ -2848,6 +2962,7 @@ m
 ### **■ 3\. 후보 비교하기**
 
 **예제 3-13. 거점 후보의 기준별 값 구하기**
+```
 
 import math  
 import pandas as pd
@@ -2869,6 +2984,7 @@ for name, xy in candidates.items():
     })  
 df \= pd.DataFrame(rows)  
 print(df)  
+```
 실행 결과
 
   후보  평균거리  최대거리  제한여유  평균풍속  
@@ -2885,6 +3001,7 @@ print(df)
 작을수록 좋은 기준(거리, 바람)은 1에서 이 점수를 빼서 뒤집습니다.
 
 **예제 3-14. 중요도를 반영한 종합 점수**
+```
 
 import math  
 import pandas as pd
@@ -2918,6 +3035,7 @@ df\["종합점수"\] \= (df\["거리점수"\] \* weight\["거리"\]
 
 print(df\[\["후보", "거리점수", "여유점수", "바람점수", "종합점수"\]\].round(3))  
 print("\\n선택:", df.sort\_values("종합점수", ascending=False).iloc\[0\]\["후보"\], "후보")  
+```
 실행 결과
 
   후보   거리점수   여유점수   바람점수   종합점수  
@@ -2939,6 +3057,7 @@ print("\\n선택:", df.sort\_values("종합점수", ascending=False).iloc\[0\]\[
 중요도를 바꾸면 결과가 얼마나 달라지는지 확인해 보는 것은 매우 중요합니다. 조금만 바꿔도 순위가 뒤집힌다면, 그 결론은 그만큼 불안정하다는 뜻입니다.
 
 **예제 3-15. 중요도에 따라 결과가 어떻게 달라지는가**
+```
 
 import pandas as pd
 
@@ -2961,6 +3080,7 @@ for view, w in views.items():
     best \= score\["후보"\]\[total.idxmax()\]  
     values \= ", ".join(f"{n}={v:.2f}" for n, v in zip(score\["후보"\], total))  
     print(f"{view:8s} → {values} ⇒ 선택: {best}")  
+```
 실행 결과
 
 효율 중시    → A=0.24, B=0.65, C=0.90 ⇒ 선택: C  
@@ -3229,6 +3349,7 @@ AI가 알려 준 코드로 드론을 날렸는데 사고가 났다면, 그 책�
 AI의 도움을 받든 직접 쓰든, 의사코드를 코드로 옮기는 과정은 같습니다. 아래 코드는 의사코드의 각 줄을 주석으로 옆에 붙여 두었습니다.
 
 **예제 4-1. 의사코드를 코드로 옮기기**
+```
 
 from drone\_sim import \*
 
@@ -3255,6 +3376,7 @@ else:
     drone.sim\_save\_log()                    \# 비행 기록을 저장한다  
     print(f"완료한 구간: {done}개, 남은 배터리: {drone.get\_battery()} %")   \# 출력  
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 38 %  
@@ -3329,6 +3451,7 @@ AI가 준 코드는 다음 네 단계로 확인합니다. 앞 단계를 통과�
 다음은 '목표 거리만큼 전진한 뒤 착륙하는 코드'를 요청해서 받았다고 가정한 코드입니다. 겨보기에는 문제가 없어 보입니다.
 
 **예제 4-2. AI가 만들었다고 가정한 코드**
+```
 
 from drone\_sim import \*
 
@@ -3342,6 +3465,7 @@ print("도착 위치:", drone.get\_pos\_x(), "cm")
 drone.land()  
 drone.close()  
 print("목표였던 거리: 5 m \= 500 cm")  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
@@ -3362,6 +3486,7 @@ print("목표였던 거리: 5 m \= 500 cm")
 코드론에듀의 move\_forward()는 단위를 두 번째 인자로 받습니다. 단위를 "m"로 알려 주면 고쳐집니다. 여기에 더해 변수 이름에 단위(\_m)를 드러내면 같은 실수를 막을 수 있습니다.
 
 **예제 4-3. 단위를 바로잡고 안전장치를 더한 코드**
+```
 
 from drone\_sim import \*
 
@@ -3380,6 +3505,7 @@ else:
     print("목표 500 cm 에 30 cm 안쪽으로 도달했는가?", abs(x \- 500\) \<= 30\)  
     drone.land()  
 drone.close()  
+```
 실행 결과
 
 \[가상\] 드론에 연결되었습니다. 배터리 100 %  
