@@ -10,7 +10,7 @@
 이 모듈만의 기능에는 모두 sim_ 이 붙어 있다. 실기체로 옮길 때에는 sim_ 줄을 지운다.
     drone.sim_set_wind(4)          바람 세기(m/s)
     drone.sim_set_obstacle(120)    앞쪽 장애물까지 거리(cm)
-    drone.sim_set_floor("Red")     바닥 색
+    drone.sim_set_floor("red")     바닥 색
     drone.sim_save_log()           비행 기록을 CSV로 저장
 
 좌표는 CoDrone EDU와 같다. 이륙한 곳이 원점이고 x는 앞(+)뒤(-), y는 왼쪽(+)오른쪽(-), z는 위(+)이다.
@@ -23,8 +23,9 @@ import csv
 import math
 import random
 import time as _time
+from enum import Enum
 
-__all__ = ["Drone", "Note", "DroneError", "NotConnectedError", "LowBatteryError"]
+__all__ = ["Drone", "Note", "ModeFlight", "DroneError", "NotConnectedError", "LowBatteryError"]
 
 
 # ───────── 예외 (가상 드론 전용. 실기체 라이브러리에는 없다) ─────────
@@ -54,7 +55,15 @@ _COLOR_NAMES = {
 _LEGACY_COLOR = {"빨강": (255, 0, 0), "초록": (0, 255, 0), "파랑": (0, 0, 255),
                  "노랑": (255, 255, 0), "하늘": (0, 255, 255), "보라": (255, 0, 255),
                  "흰색": (255, 255, 255)}
-_FLOOR_COLORS = ["Red", "Green", "Yellow", "Blue", "Cyan", "Magenta", "Black", "White"]
+_FLOOR_COLORS = ["red", "green", "yellow", "blue", "light blue", "purple", "black", "white"]
+
+
+class ModeFlight(Enum):
+    """실기체의 get_flight_state() 가 돌려주는 값과 같은 이름. .name 으로 이름을 꺼낸다."""
+    Ready = 16
+    TakeOff = 18
+    Flight = 19
+    Landing = 20
 
 _DT = 0.05          # 계산 간격(초)
 _TAKEOFF_CM = 80    # CoDrone EDU 는 평균 80cm 높이로 이륙한다
@@ -81,7 +90,7 @@ class Drone:
         self._delay = [[0, 0, 0, 0]] * 3  # 명령이 모터에 전해지기까지의 지연
         self._move = [0, 0, 0, 0]         # roll, pitch, yaw, throttle
         self._obstacle_x = None           # 장애물의 x 좌표(cm)
-        self._floor = "White"
+        self._floor = "white"
         self._led = (0, 0, 0)
         self._p0 = None
         self._press_at = {}
@@ -141,7 +150,12 @@ class Drone:
         return (fwd * math.cos(h) - left * math.sin(h), fwd * math.sin(h) + left * math.cos(h))
 
     def _cm(self, value, units):
-        return value * {"cm": 1, "m": 100, "mm": 0.1, "in": 2.54, "ft": 30.48}[units]
+        # 실기체와 같이 cm, m, in, ft 만 받는다. 다른 단위는 오류 문구만 내고 움직이지 않는다.
+        table = {"cm": 1, "m": 100, "in": 2.54, "ft": 30.48}
+        if units not in table:
+            print("Error: Not a valid unit.")
+            return None
+        return value * table[units]
 
     def _out(self, value_cm, unit):
         return round(value_cm / {"cm": 1, "m": 100, "mm": 0.1, "in": 2.54}[unit], 2)
@@ -167,6 +181,7 @@ class Drone:
         self._heading = 0.0
         self._z = _TAKEOFF_CM
         self._v = [0.0, 0.0, 0.0]
+        self._delay = [[0, 0, 0, 0]] * 3  # 이전 비행에서 남은 명령을 비운다
         self._t += 2
         self._drain(2, 50)
         self._say(f"[가상] 이륙. 고도 약 {_TAKEOFF_CM} cm")
@@ -252,8 +267,9 @@ class Drone:
     def _go(self, fwd, left, up, speed, name):
         if not self._need_flying(name):
             return False
-        if not 0 < speed <= 2:
-            raise ValueError(f"속도는 0보다 크고 2 m/s 이하여야 합니다. (받은 값: {speed})")
+        speed = max(0, min(2, speed))     # 실기체처럼 속도는 0~2 m/s 로 잘린다
+        if speed == 0:
+            raise ZeroDivisionError("speed 가 0 이라 이동 시간을 계산할 수 없습니다.")
         dist = math.sqrt(fwd ** 2 + left ** 2 + up ** 2)
         seconds = dist / (speed * 100)
         dx, dy = self._to_world(fwd, left)
@@ -267,22 +283,22 @@ class Drone:
 
     def move_forward(self, distance, units="cm", speed=0.5):
         d = self._cm(distance, units)
-        if self._go(d, 0, 0, speed, "move_forward"):
+        if d is not None and self._go(d, 0, 0, speed, "move_forward"):
             self._say(f"[가상] 앞으로 {distance}{units}")
 
     def move_backward(self, distance, units="cm", speed=0.5):
         d = self._cm(distance, units)
-        if self._go(-d, 0, 0, speed, "move_backward"):
+        if d is not None and self._go(-d, 0, 0, speed, "move_backward"):
             self._say(f"[가상] 뒤로 {distance}{units}")
 
     def move_left(self, distance, units="cm", speed=0.5):
         d = self._cm(distance, units)
-        if self._go(0, d, 0, speed, "move_left"):
+        if d is not None and self._go(0, d, 0, speed, "move_left"):
             self._say(f"[가상] 왼쪽으로 {distance}{units}")
 
     def move_right(self, distance, units="cm", speed=0.5):
         d = self._cm(distance, units)
-        if self._go(0, -d, 0, speed, "move_right"):
+        if d is not None and self._go(0, -d, 0, speed, "move_right"):
             self._say(f"[가상] 오른쪽으로 {distance}{units}")
 
     def move_distance(self, positionX, positionY, positionZ, velocity):
@@ -293,6 +309,7 @@ class Drone:
     def turn_left(self, degree=90):
         if not self._need_flying("turn_left"):
             return
+        degree = min(int(abs(degree)), 360)   # 실기체처럼 소수점은 버리고 360도까지만
         self._heading = (self._heading + degree + 180) % 360 - 180
         self._t += degree / 90
         self._drain(degree / 90, 30)
@@ -302,6 +319,7 @@ class Drone:
     def turn_right(self, degree=90):
         if not self._need_flying("turn_right"):
             return
+        degree = min(int(abs(degree)), 360)   # 실기체처럼 소수점은 버리고 360도까지만
         self._heading = (self._heading - degree + 180) % 360 - 180
         self._t += degree / 90
         self._drain(degree / 90, 30)
@@ -446,9 +464,9 @@ class Drone:
         return round(self._heading, 1)
 
     def get_pressure(self, unit="Pa"):
-        """기압(Pa). 1m 올라갈 때마다 약 11Pa 낮아진다."""
+        """기압(Pa). 지면 근처에서는 1m 올라갈 때마다 약 12Pa 낮아진다."""
         self._need_pair()
-        pa = 101325 - self._z / 9.34 + self._noise(0.5)
+        pa = 101325 - self._z * 0.12 + self._noise(0.5)
         return round(pa if unit == "Pa" else pa / 100, 2)
 
     def set_initial_pressure(self):
@@ -466,15 +484,22 @@ class Drone:
         return round({"C": c, "F": c * 9 / 5 + 32, "K": c + 273.15}[unit], 1)
 
     def get_colors(self, kind="name"):
-        """[앞 센서 색, 뒤 센서 색]"""
+        """[앞 센서 색, 뒤 센서 색]. 실기체처럼 소문자 영어 이름(red, light blue ...)을 돌려준다."""
         self._need_pair()
         return [self._floor, self._floor]
 
+    def get_front_color(self, kind="name"):
+        return self.get_colors(kind)[0]
+
+    def get_back_color(self, kind="name"):
+        return self.get_colors(kind)[1]
+
     def get_battery(self):
-        return round(self._battery, 1)
+        return int(self._battery)          # 실기체처럼 정수(%)로 돌려준다
 
     def get_flight_state(self):
-        return "flight" if self._flying else "ready"
+        """실기체처럼 ModeFlight 값을 돌려준다. 이름은 .name 으로 본다 (예: "Flight")."""
+        return ModeFlight.Flight if self._flying else ModeFlight.Ready
 
     # ───────── 빛과 소리 ─────────
     def set_drone_LED(self, r, g, b, brightness=100):
@@ -546,7 +571,8 @@ class Drone:
         self._obstacle_x = None if distance is None else self._x + distance
 
     def sim_set_floor(self, color):
-        """바닥 색: Red, Green, Yellow, Blue, Cyan, Magenta, Black, White"""
+        """바닥 색: red, green, yellow, blue, light blue, purple, black, white"""
+        color = color.lower()
         if color not in _FLOOR_COLORS:
             raise ValueError(f"바닥 색은 {_FLOOR_COLORS} 중 하나여야 합니다.")
         self._floor = color
