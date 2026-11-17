@@ -1,5 +1,5 @@
-"""drone_sim2.py - 수업용 가상 드론 모듈 (AI 드론 코딩2)
-'AI 드론 코딩1'의 drone_sim 에 센서, 예외 처리, 피드백 제어 기능을 더한 것이다.
+"""drone_sim2.py - 수업용 가상 드론 모듈 (AI 드론 지능형 제어)
+'AI 드론 데이터 코딩'의 drone_sim 에 센서, 예외 처리, 피드백 제어 기능을 더한 것이다.
 """
 import csv, math, random
 
