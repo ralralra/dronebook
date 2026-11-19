@@ -1,0 +1,7 @@
+# 예제를 실행하면 생기는 파일
+__pycache__/
+mydrone/
+path_tools.py
+mission.json
+*.csv
+*.png

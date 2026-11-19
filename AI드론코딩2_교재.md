@@ -41,6 +41,7 @@ Nov 9, 2026 · @JeongMinOh
 1. 파이참 프로젝트 폴더에 부록 1의 drone\_sim.py(가상 드론)와 부록 2의 font\_setup.py(한글 글꼴 설정)를 넣습니다. drone\_sim.py는 1학기와 같은 파일이지만, 2학기 내용에 맞추어 센서 기능을 고친 새 판을 써야 합니다.  
 2. 파이참의 Python Packages 창(또는 터미널의 pip install)에서 codrone\_edu, pandas, matplotlib, scikit-learn을 설치합니다. codrone\_edu는 1-5에서 이미 설치했다면 그대로 씁니다.  
 3. 프로젝트 창에서 새 파이썬 파일을 만들어 예제를 입력하고, 마우스 오른쪽 단추 → Run으로 실행합니다.  
+   이 책의 예제를 미리 입력해 둔 파일(ex1\_01.py\~ex4\_15.py)이 github.com/ralralra/dronebook의 pycharm 폴더에 있습니다. 직접 입력한 코드가 실행되지 않을 때 견주어 봅니다.  
 4. 실기체로 옮길 때는 첫 줄 from drone\_sim import \*를 from codrone\_edu.drone import \*로 바꾸고, sim\_으로 시작하는 줄을 지웁니다.
 
 책에 실린 실행 결과는 모두 이 가상 드론으로 실제 실행해 얻은 것입니다. 가상 드론은 같은 코드를 실행하면 늘 같은 결과를 내도록 만들어져 있으므로, 여러분의 결과가 책과 다르다면 코드를 다시 확인해 봅니다. 실기체의 결과는 센서 잡음과 실내 환경 때문에 책과 조금씩 다릅니다.
