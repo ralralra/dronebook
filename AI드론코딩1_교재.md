@@ -3338,20 +3338,24 @@ folium.Map()은 지도를 만드는 함수입니다. 만든 지도를 m이라는
 
 import folium  
 
-m \= folium.Map()  
+m \= folium.Map(tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
 ).add\_to(m)  
 m  
 ```
-세계 지도가 나옵니다. 괄호 안에 아무것도 적지 않았기 때문에 folium이 정해 둔 기본 모습으로 그린 것입니다. import 줄은 한 번만 실행하면 되므로 ②부터는 적지 않습니다.
+세계 지도가 나옵니다. 어디를 볼지 정하지 않았기 때문에 folium이 정해 둔 기본 모습으로 그린 것입니다. import 줄은 한 번만 실행하면 되므로 ②부터는 적지 않습니다.
 
-가운데 네 줄은 지도 그림을 어디서 받아 올지 정합니다. folium.TileLayer()가 오픈스트리트맵(OpenStreetMap)의 지도 그림을 받아 오는 층을 만들고, .add\_to(m)이 그 층을 지도 m 위에 얹습니다. 이 네 줄은 앞으로 모든 지도에 똑같이 넣습니다.
+괄호 안의 tiles=None은 'folium이 알아서 넣어 주는 배경 지도를 넣지 말라'는 뜻입니다. tiles는 배경 지도의 종류를 정하는 인자이고, None은 '없음'을 뜻하는 값으로, 2-3에서 빠진 값을 나타낼 때 썼습니다. 배경 지도를 비워 둔 채로 지도를 만들고, 바로 아래에서 우리가 직접 배경 지도를 얹습니다.
+
+가운데 네 줄이 그 일을 합니다. folium.TileLayer()가 오픈스트리트맵(OpenStreetMap)의 지도 그림을 받아 오는 층을 만들고, .add\_to(m)이 그 층을 지도 m 위에 얹습니다. tiles=None과 이 네 줄은 짝입니다. 앞으로 모든 지도에 똑같이 넣습니다.
 
 ***짚고 가기** referrer\_policy 줄이 없으면 지도가 나오지 않습니다.*
 
 *오픈스트리트맵은 지도 그림을 달라는 요청이 올 때마다 '어느 곳에서 보낸 요청인가'를 확인하고, 이것을 밝히지 않은 요청에는 그림을 주지 않습니다. referrer\_policy 줄은 요청을 보낼 때 그 정보를 함께 보내라는 뜻입니다. 이 줄을 지우고 실행해 보세요. 지도가 있어야 할 자리가 비거나, 접근이 막혔다는 안내 그림이 나옵니다. 예전에는 이 줄 없이도 지도가 나왔지만, 지금은 이용 규칙을 지키는 요청에만 지도를 내줍니다.*
+
+*folium이 알아서 넣어 주는 배경 지도에는 이 줄이 들어 있지 않습니다. 그래서 tiles=None으로 그것을 빼고, 요청하는 곳을 밝히는 배경 지도를 우리 손으로 얹는 것입니다.*
 
 #### **② location으로 원하는 곳 열기**
 
@@ -3359,7 +3363,7 @@ m
 
 ```
 
-m \= folium.Map(location\=\[36.7166, 127.4991\])  
+m \= folium.Map(location\=\[36.7166, 127.4991\], tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
@@ -3374,7 +3378,7 @@ m
 
 ```
 
-m \= folium.Map(location\=\[36.7166, 127.4991\], zoom\_start\=12)  
+m \= folium.Map(location\=\[36.7166, 127.4991\], zoom\_start\=12, tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
@@ -3389,7 +3393,7 @@ m
 
 ```
 
-m \= folium.Map(location\=\[36.7166, 127.4991\], zoom\_start\=12)  
+m \= folium.Map(location\=\[36.7166, 127.4991\], zoom\_start\=12, tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
@@ -3405,7 +3409,7 @@ m
 
 ```
 
-m \= folium.Map(location\=\[36.7166, 127.4991\], zoom\_start\=12)  
+m \= folium.Map(location\=\[36.7166, 127.4991\], zoom\_start\=12, tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
@@ -3434,7 +3438,7 @@ places \= {
     "김해국제공항": \[35.1806, 128.9381\],  
 }  
 
-m \= folium.Map(location\=places\["제주국제공항"\], zoom\_start\=12)  
+m \= folium.Map(location\=places\["제주국제공항"\], zoom\_start\=12, tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
@@ -3450,7 +3454,7 @@ places\["제주국제공항"\]은 \[33.5122, 126.4928\]을 돌려주므로 locat
 
 ```
 
-m \= folium.Map(location\=\[36.0, 127.8\], zoom\_start\=7)  
+m \= folium.Map(location\=\[36.0, 127.8\], zoom\_start\=7, tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
@@ -3475,7 +3479,7 @@ df \= pd.DataFrame({
     "경도": \[127.4991, 126.7975, 126.4928, 128.9381\],  
 })  
 
-m \= folium.Map(location\=\[36.0, 127.8\], zoom\_start\=7)  
+m \= folium.Map(location\=\[36.0, 127.8\], zoom\_start\=7, tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
@@ -3489,7 +3493,7 @@ m
 
 | 단계 | 더한 것 | 지도에서 달라진 것 |
 | :---- | :---- | :---- |
-| ① | folium.Map()과 TileLayer | 세계 지도가 나타납니다 |
+| ① | folium.Map(tiles=None)과 TileLayer | 세계 지도가 나타납니다 |
 | ② | location | 원하는 곳이 한가운데에 열립니다 |
 | ③ | zoom\_start | 지도가 가까워집니다 |
 | ④ | folium.Marker(location) | 표식이 섭니다 |
@@ -3529,7 +3533,7 @@ import folium
 
 airport \= \[36.7166, 127.4991\]              \# 청주국제공항(위도, 경도)  
 
-m \= folium.Map(location\=airport, zoom\_start\=11)  
+m \= folium.Map(location\=airport, zoom\_start\=11, tiles\=None)  
 folium.TileLayer(  
     "OpenStreetMap",  
     referrer\_policy\="strict\-origin\-when\-cross\-origin",   \# 지도를 요청하는 곳을 밝힌다  
