@@ -46,12 +46,12 @@ Nov 5, 2026
 
 실기체 비행은 1-5에서 한 번, 파이참(PyCharm)으로 합니다. 코랩은 구글 서버에서 돌아가므로 학생 PC와 연결된 기체를 인식할 수 없기 때문입니다. 파이참을 본격적으로 쓰는 것은 2학기 'AI 드론 지능형 제어'입니다.
 
-실제 드론 비행 기록으로 연습하는 **연계 실습 노트**(코랩 노트북)도 함께 제공합니다. Ⅱ·Ⅲ단원을 배운 뒤 쓰도록 만들었고, 쓰는 자료와 출처는 부록 5에 정리했습니다.
+2-3, 2-4, 3-2의 끝에는 **실제 데이터로 해 보기**가 있습니다. 가상 드론이 아니라 실제 드론의 비행 기록과 공공데이터를 같은 방법으로 분석해 봅니다. 여기에 실린 코드에는 '예제' 대신 '실전'이라는 이름을 붙였습니다. 쓰는 자료와 출처는 부록 5에 정리했습니다.
 
 ## **차례**
 
 * 이 책의 구성  
-* 들어가는 글: 이륙 하기 전에  
+* 들어가는 글: 이륙하기 전에  
 * **Ⅰ. 드론 프로그래밍 기초**  
   * 1-1 드론의 이해와 코딩 환경 구성  
   * 1-2 파이썬 기본 문법과 자료형  
@@ -82,11 +82,11 @@ Nov 5, 2026
   * 부록 2\. 한글 글꼴 설정 font\_setup.py  
   * 부록 3\. 스스로 확인하기 정답과 해설  
   * 부록 4\. 성취기준과 소단원 대응표  
-  * 부록 5\. 실제 드론 데이터 연계 실습
+  * 부록 5\. 실제 드론 데이터의 출처
 
 ## 
 
-## **들어가는 글: 이륙 버튼을 누르기 전에**
+## **들어가는 글: 이륙하기 전에**
 
 드론 사고라고 하면 대부분 조종 실수를 떠올립니다. 손가락이 미끄러졌다거나 방향을 헷갈렸다거나 하는 장면입니다. 그런데 조종을 아무리 잘해도 막을 수 없는 위험이 있습니다. 갑자기 돌풍이 부는 날, 날리면 안 되는 구역, 사람이 빽빽하게 모인 곳의 하늘이 그렇습니다. 이런 위험은 드론이 하늘에 떠 있는 동안이 아니라 **이륙 버튼을 누르기 전에** 이미 결정됩니다.
 
@@ -531,7 +531,7 @@ drone.close()
 
 ***한 걸음 더** / 와 // 의 차이*
 
-*/는 소수점까지 계산하고, //는 소수점을 버리고 몫만 남깁니다. '배터리로 몇 번이나 왕복할 수 있는가'처럼 횟수를 셈 때는 //를 쓰는 것이 자연스럽습니다. 2.7번 왕복할 수는 없기 때문입니다.*
+*/는 소수점까지 계산하고, //는 소수점을 버리고 몫만 남깁니다. '배터리로 몇 번이나 왕복할 수 있는가'처럼 횟수를 셀 때는 //를 쓰는 것이 자연스럽습니다. 2.7번 왕복할 수는 없기 때문입니다.*
 
 ### **■ 2\. 비행 시간과 배터리 계산하기**
 
@@ -1855,7 +1855,7 @@ turn\_right      3
 정지비행        1  
 착륙            1  
 Name: count, dtype: int64  
-value\_counts()는 같은 값이 몇 번 나왔는지 셍니다. 앞으로 가기와 오른쪽 돌기가 각각 3번씩 있었음을 한눈에 알 수 있습니다.
+value\_counts()는 같은 값이 몇 번 나왔는지 셉니다. 앞으로 가기와 오른쪽 돌기가 각각 3번씩 있었음을 한눈에 알 수 있습니다.
 
 ***해 보기** 구간별 배터리 소모량 구하기*
 
@@ -2083,6 +2083,126 @@ print("평균 기온:", round(df\["기온"\].mean(), 1), "도")
 5. 처리 방법을 정하고, 그렇게 정한 까닭을 한 문장으로 적습니다.  
 6. 전처리 전후의 평균 풍속을 비교합니다.
 
+### **■ 7\. 실제 데이터로 해 보기: 드론 민원 통계**
+
+지금까지는 우리가 일부러 문제를 넣어 만든 weather.csv로 연습했습니다. 이번에는 진짜 공공데이터를 다뤄 봅니다. 국토교통부 서울지방항공청이 공공데이터포털에 공개한 '드론 원스톱 민원 신청 건수'로, 2020년 8월부터 2025년 6월까지 달마다 비행승인과 항공촬영허가 신청이 몇 건 들어왔는지 담은 엑셀 파일입니다. 이용허락범위에 제한이 없어 누구나 쓸 수 있습니다.
+
+파일은 내려받지 않고 인터넷 주소에서 바로 읽습니다. pd.read\_csv()와 pd.read\_excel()은 파일 이름 자리에 주소를 적어도 읽어 줍니다.
+
+**실전 2-1. 엑셀 파일을 있는 그대로 읽어 보기**
+```
+
+import pandas as pd  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+raw \= pd.read\_excel(DATA \+ "drone\_minwon.xlsx", header\=None)   \# 제목 줄을 정하지 않고 그대로 읽기  
+print("행과 열의 수:", raw.shape)  
+print(raw\[\[0, 3, 4\]\].head(5))        \# 0, 3, 4번 열의 처음 다섯 줄  
+print()  
+print(raw\[\[0, 3, 4\]\].tail(3))        \# 마지막 세 줄  
+```
+
+실행 결과
+
+행과 열의 수: (63, 6)  
+                    0             3                 4  
+0  드론 원스톱 민원서비스 이용 현황           NaN               NaN  
+1                처리연월  비행승인\\n신청 건수   항공사진촬영허가\\n신청 건수   
+2                 NaN           NaN               NaN  
+3            2020년 8월          5180              6487  
+4            2020년 9월          5788              7548  
+
+                                                   0      3      4  
+60                                          2025년 5월  19118  18332  
+61                                          2025년 6월  16710  16399  
+62  \* 드론원스톱민원서비스 운영 개시('20.8월) 이후 홈페이지를 통해 신청된 민원 건수    NaN    NaN  
+엑셀 파일을 여는 함수는 pd.read\_excel()입니다. header=None은 '첫 줄을 열 이름으로 쓰지 말고 모든 줄을 그대로 보여 달라'는 뜻입니다. 그대로 보니 문제가 여럿 보입니다.
+
+| 줄 | 들어 있는 것 | 왜 문제인가 |
+| :---- | :---- | :---- |
+| 0번 | 표의 제목 | 자료가 아닌데 한 줄을 차지합니다 |
+| 1번 | 열 이름 | 진짜 열 이름이 둘째 줄에 있고, 이름 안에 줄바꿈(\\n)이 들어 있습니다 |
+| 2번 | 빈 줄 | 값이 모두 NaN입니다 |
+| 62번 | 각주(\* 로 시작하는 설명) | 숫자가 아닌 설명 글이 자료 줄에 섞여 있습니다 |
+
+표 2-5. 민원 통계 파일에서 찾은 문제
+
+사람이 보기 좋게 꾸민 표는 컴퓨터가 읽기에는 불편합니다. 공공데이터에는 이런 파일이 흔합니다.
+
+**실전 2-2. 읽을 수 있는 표로 정리하기**
+```
+
+import pandas as pd  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+minwon \= pd.read\_excel(DATA \+ "drone\_minwon.xlsx", header\=1)    \# 둘째 줄을 열 이름으로 쓰기  
+minwon.columns \= \["연월", "기체신고", "사업등록", "비행승인", "촬영허가", "원스톱"\]  
+minwon \= minwon.dropna(subset\=\["비행승인"\])                      \# 비행승인 값이 없는 줄(빈 줄, 각주) 지우기  
+minwon\["연도"\] \= minwon\["연월"\].str\[:4\].astype(int)             \# "2020년 8월" → 2020  
+
+print("정리한 뒤:", minwon.shape)  
+print(minwon\[\["연월", "비행승인", "촬영허가", "연도"\]\].head(4))  
+print()  
+print(minwon\[\["비행승인", "촬영허가"\]\].describe().round(0))  
+```
+
+실행 결과
+
+정리한 뒤: (59, 7)  
+          연월    비행승인    촬영허가    연도  
+1   2020년 8월  5180.0  6487.0  2020  
+2   2020년 9월  5788.0  7548.0  2020  
+3  2020년 10월  7012.0  9191.0  2020  
+4  2020년 11월  6772.0  8137.0  2020  
+
+          비행승인     촬영허가  
+count     59.0     59.0  
+mean   13183.0  13723.0  
+std     4550.0   4003.0  
+min     4238.0   5641.0  
+25%    10119.0  11212.0  
+50%    13318.0  12987.0  
+75%    16864.0  16612.0  
+max    21311.0  22092.0  
+네 줄로 문제 넷을 모두 해결했습니다. header=1로 둘째 줄을 열 이름으로 삼아 제목 줄을 건너뛰었고, 줄바꿈이 든 긴 열 이름은 짧은 이름으로 통째로 바꿨습니다. dropna(subset=\["비행승인"\])은 비행승인 칸이 빈 줄을 지웁니다. 빈 줄과 각주 줄이 여기에 걸려 함께 사라졌고, 63줄이 59줄이 되었습니다. .str\[:4\]는 글자의 앞 네 자만 잘라 내는 방법으로, "2020년 8월"에서 "2020"을 얻었습니다.
+
+describe()로 보니 비행승인 신청은 한 달에 적을 때 4천여 건, 많을 때 2만 1천여 건입니다. 최솟값과 최댓값이 말이 되는 범위에 있으므로 이상값은 없어 보입니다.
+
+**실전 2-3. 해마다 얼마나 늘었을까**
+```
+
+import pandas as pd  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+minwon \= pd.read\_excel(DATA \+ "drone\_minwon.xlsx", header\=1)  
+minwon.columns \= \["연월", "기체신고", "사업등록", "비행승인", "촬영허가", "원스톱"\]  
+minwon \= minwon.dropna(subset\=\["비행승인"\])  
+minwon\["연도"\] \= minwon\["연월"\].str\[:4\].astype(int)  
+
+for year in range(2020, 2026):  
+    one \= minwon\[minwon\["연도"\] \=\= year\]             \# 그 해의 줄만 고르기  
+    total \= int(one\["비행승인"\].sum())  
+    print(f"{year}년: 비행승인 {total:\>7,}건 (자료가 있는 달 {len(one):\>2}개)")  
+```
+
+실행 결과
+
+2020년: 비행승인  29,154건 (자료가 있는 달  5개)  
+2021년: 비행승인 109,219건 (자료가 있는 달 12개)  
+2022년: 비행승인 162,779건 (자료가 있는 달 12개)  
+2023년: 비행승인 179,465건 (자료가 있는 달 12개)  
+2024년: 비행승인 198,871건 (자료가 있는 달 12개)  
+2025년: 비행승인  98,320건 (자료가 있는 달  6개)  
+2-2에서 배운 '조건으로 걸러내기'를 for 문 안에서 여섯 번 되풀이했습니다. 2021년 약 10만 9천 건이던 신청이 2024년에는 약 19만 9천 건으로 늘었습니다. 3년 만에 거의 두 배입니다.
+
+***짚고 가기** 합계만 보면 속습니다.*
+
+*2025년은 98,320건으로 2024년의 절반입니다. 드론 비행이 갑자기 줄었을까요? 괄호 안을 보면 2025년은 자료가 6개월 치뿐입니다. 2020년도 다섯 달 치입니다. 기간이 다른 값을 그대로 견주면 잘못된 결론이 나옵니다. 합계를 비교할 때는 '몇 개를 더한 값인가'를 함께 확인합니다.*
+
+
 ### **핵심 정리**
 
 * 공공데이터는 출처, 이용 조건, 내용을 확인한 뒤 수집하며 개인정보가 담긴 자료는 쓰지 않습니다.  
@@ -2125,7 +2245,7 @@ print("평균 기온:", round(df\["기온"\].mean(), 1), "도")
 | 기온 | 너무 춥거나 더우면 배터리 성능이 떨어집니다 | 겨울철에는 비행 시간이 짧아집니다 |
 | 안개·미세먼지 | 시야가 나빠 기체를 눈으로 확인하기 어렵습니다 | 가시거리를 확인합니다 |
 
-표 2-5. 기상 요소가 드론 비행에 미치는 영향
+표 2-6. 기상 요소가 드론 비행에 미치는 영향
 
 그림 2-1. 풍속이 높을수록 경로 이탈 거리가 커진다 (원본 그림 유지)
 
@@ -2230,7 +2350,7 @@ print("\\n효율이 가장 좋은 속도:", best\["속도"\], "m/s")
 
 *미국 카네기멜런대학교 연구팀은 배송용 드론(DJI Matrice 100)으로 같은 삼각형 경로를 날면서 속도·화물 무게·높이를 정해진 값으로 바꿔 가며 180여 번 비행하고, 비행마다 쓴 에너지를 쟀습니다(부록 5). 속도별로 평균을 내면 비행 1회에 4 m/s는 27.5 Wh, 6 m/s는 22.1 Wh, 8 m/s는 19.9 Wh, 10 m/s는 18.4 Wh, 12 m/s는 18.5 Wh를 썼습니다.*
 
-*4 m/s에서 10 m/s까지는 빠를수록 에너지를 덜 썼습니다. 평균 전력은 속도와 관계없이 400 W 안팎으로 거의 같았고, 빨리 날아 비행 시간이 짧아진 것이 그 까닭입니다. 예제 2-17의 가상 드론과 같은 원리입니다. 그러나 12 m/s는 10 m/s보다 나아지지 않았습니다. 그래서 가설은 '맞았다'가 아니라 '이 기체, 이 경로에서는 10 m/s 근처까지 맞았다'로 정리해야 합니다. 이 기체는 코드론 EDU와 크기도 속도 범위도 전혀 다르므로 숫자를 그대로 옮길 수 없습니다. 연계 실습 노트 파트 3에서 이 자료를 직접 분석해 봅니다.*
+*4 m/s에서 10 m/s까지는 빠를수록 에너지를 덜 썼습니다. 평균 전력은 속도와 관계없이 400 W 안팎으로 거의 같았고, 빨리 날아 비행 시간이 짧아진 것이 그 까닭입니다. 예제 2-17의 가상 드론과 같은 원리입니다. 그러나 12 m/s는 10 m/s보다 나아지지 않았습니다. 그래서 가설은 '맞았다'가 아니라 '이 기체, 이 경로에서는 10 m/s 근처까지 맞았다'로 정리해야 합니다. 이 기체는 코드론 EDU와 크기도 속도 범위도 전혀 다르므로 숫자를 그대로 옮길 수 없습니다. 이 자료의 출처는 부록 5에 있습니다.*
 
 효율만이 답은 아닙니다. '무엇을 중요하게 볼 것인가'에 따라 답이 달라집니다. 빠르게 날수록 바람이나 장애물에 대처할 시간이 짧아지고, 실내에서는 부딪혔을 때 충격도 커집니다.
 
@@ -2281,6 +2401,161 @@ print(f" 비행 가능일: {days}")
 3. 비행 거리와 속도를 정해 필요한 배터리를 계산합니다.  
 4. '결론 한 문장 \+ 근거 세 가지' 형식으로 정리해 발표합니다.  
 5. 다른 모둠과 기준이 달랐다면 왜 달랐는지 이야기해 봅시다.
+
+### **■ 5\. 실제 데이터로 해 보기: 실제 드론의 비행 기록**
+
+이 소단원의 비행 데이터는 모두 가상 드론이 계산식으로 만들어 낸 값이었습니다. 실제 드론의 기록은 어떨까요? 사이프러스대학교 KIOS 연구센터는 산업용 드론(DJI Matrice 300)을 일곱 번 날리며 0.1초마다 기체의 상태를 기록해 공개했습니다(부록 5). 이 기록 가운데 수업에 쓸 여섯 열만 골라 담은 파일을 읽어 봅니다.
+
+**실전 2-4. 구분자가 다른 파일 읽기**
+```
+
+import pandas as pd  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+wrong \= pd.read\_csv(DATA \+ "kios\_flights.csv")              \# 평소처럼 읽기  
+print("그냥 읽으면:", wrong.shape)  
+print(wrong.columns\[0\])  
+print()  
+
+kios \= pd.read\_csv(DATA \+ "kios\_flights.csv", sep\=";")      \# 구분자를 알려 주고 읽기  
+print("sep\=';' 로 읽으면:", kios.shape)  
+print(kios.head(3))  
+print()  
+print(kios\["flight"\].value\_counts().sort\_index())  
+```
+
+실행 결과
+
+그냥 읽으면: (54726, 1)  
+flight;seq;wind\_speed;battery\_voltage;battery\_current;position\_z  
+
+sep\=';' 로 읽으면: (54726, 6)  
+   flight  seq  wind\_speed  battery\_voltage  battery\_current  position\_z  
+0       1    1        1.28            51515              825         0.0  
+1       1    2        1.28            51523              825         0.0  
+2       1    3        1.28            51523              825         0.0  
+
+flight  
+1     3139  
+2     1245  
+3     7296  
+4     7510  
+5    18571  
+6    15230  
+7     1735  
+Name: count, dtype: int64  
+평소처럼 읽었더니 열이 1개뿐입니다. 첫 열의 이름을 보면 까닭을 알 수 있습니다. 값과 값 사이가 쉼표가 아니라 쌍반점(;)으로 나뉘어 있습니다. pd.read\_csv()는 쉼표를 기준으로 나누기 때문에 한 줄 전체를 값 하나로 본 것입니다. sep=";"으로 구분자를 알려 주자 열 6개로 제대로 읽혔습니다.
+
+모두 5만 4천여 줄입니다. value\_counts()로 세어 보니 비행이 일곱 번 들어 있고, 길이가 제각각입니다. 7번 비행이 1,735줄로 가장 짧으므로 이것부터 살펴봅니다.
+
+| 열 | 뜻 | 단위 |
+| :---- | :---- | :---- |
+| flight | 비행 번호(1\~7) |  |
+| seq | 그 비행 안에서의 줄 번호. 0.1초마다 1씩 늘어납니다 |  |
+| wind\_speed | 기체에 단 풍속계의 값 | m/s |
+| battery\_voltage | 배터리 전압 | mV |
+| battery\_current | 배터리에서 나가는 전류 | mA |
+| position\_z | 이륙한 곳부터 잰 높이 | m |
+
+표 2-7. 실제 비행 기록 파일의 열
+
+**실전 2-5. 비행 하나를 골라 단위 바꾸기**
+```
+
+import pandas as pd  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+kios \= pd.read\_csv(DATA \+ "kios\_flights.csv", sep\=";")  
+f7 \= kios\[kios\["flight"\] \=\= 7\].copy()                       \# 7번 비행만 고르기  
+
+f7\["시간"\] \= (f7\["seq"\] \- f7\["seq"\].min()) / 10             \# 0.1초마다 한 줄 → 초  
+f7\["높이"\] \= f7\["position\_z"\]                               \# m  
+f7\["전압"\] \= f7\["battery\_voltage"\] / 1000                   \# mV → V  
+f7\["전류"\] \= f7\["battery\_current"\] / 1000                   \# mA → A  
+f7\["전력"\] \= f7\["전압"\] \* f7\["전류"\]                        \# W  
+
+print("7번 비행:", len(f7), "줄, 약", round(f7\["시간"\].max()), "초")  
+print(f7\[\["높이", "전압", "전류", "전력"\]\].describe().round(1))  
+```
+
+실행 결과
+
+7번 비행: 1735 줄, 약 173 초  
+           높이      전압      전류      전력  
+count  1735.0  1735.0  1735.0  1735.0  
+mean     38.4    44.9    19.6   872.9  
+std      27.6     0.8     7.1   314.7  
+min      \-0.1    44.1     0.7    32.0  
+25%       4.6    44.4    20.4   910.3  
+50%      55.9    44.6    22.4   996.4  
+75%      63.5    44.8    22.6  1006.0  
+max      63.6    48.1    27.4  1224.9  
+전압은 51515처럼 큰 수로 적혀 있습니다. 단위가 V가 아니라 mV(1000분의 1 V)이기 때문입니다. 1000으로 나누어 V와 A로 바꾸고, 둘을 곱해 전력(W)을 구했습니다. 1-5에서 "mm"와 "cm"를 헷갈리면 드론이 엉뚱하게 움직였던 것처럼, 데이터를 읽을 때도 단위부터 확인합니다.
+
+이 드론은 173초 동안 날며 63.6 m까지 올라갔습니다. 전력은 가운데값이 996 W입니다. 코드론에듀와는 견줄 수 없이 큰 기체이지만, 하는 일은 같습니다. 떠 있는 동안 계속 전기를 씁니다.
+
+**실전 2-6. 센서가 거짓말을 할 때**
+```
+
+import pandas as pd  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+kios \= pd.read\_csv(DATA \+ "kios\_flights.csv", sep\=";")  
+wind \= kios\[kios\["flight"\] \=\= 7\]\["wind\_speed"\]              \# 7번 비행의 풍속 열  
+
+print("평균  :", round(wind.mean(), 1), "m/s")  
+print("중앙값:", round(wind.median(), 1), "m/s")  
+print("최댓값:", round(wind.max(), 1), "m/s")  
+print("20 m/s를 넘은 기록:", (wind \> 20).sum(), "줄 /", len(wind), "줄")  
+```
+
+실행 결과
+
+평균  : 7.2 m/s  
+중앙값: 5.4 m/s  
+최댓값: 40.3 m/s  
+20 m/s를 넘은 기록: 100 줄 / 1735 줄  
+최댓값이 40.3 m/s입니다. 예제 2-16에서 우리는 풍속이 5 m/s를 넘는 날에는 비행하지 않기로 했습니다. 초속 40 m는 큰 태풍의 바람입니다. 그런 바람 속에서 드론이 63 m 높이에 고요히 떠 있었을 리는 없습니다. 바람이 아니라 풍속계가 순간적으로 튄 값, 곧 센서의 잡음으로 보아야 합니다.
+
+1,735줄 가운데 100줄이 20 m/s를 넘습니다. 이 값들이 평균을 끌어올려 평균은 7.2 m/s가 되었습니다. 중앙값은 값을 크기 순으로 줄 세웠을 때 한가운데 있는 값이라 튀는 값 몇 개에 흔들리지 않습니다. 중앙값 5.4 m/s가 실제 바람에 더 가깝습니다. .median()이 중앙값을 구하는 함수입니다.
+
+***짚고 가기** 가상 드론에는 없던 것*
+
+*예제 2-13에서는 우리가 넣어 둔 999라는 이상값 하나를 찾아 지웠습니다. 실제 기록에서는 이상값이 100개이고, 어디까지가 진짜 바람이고 어디부터가 잡음인지 선을 그어 주는 사람도 없습니다. '20 m/s'라는 기준은 우리가 정한 것입니다. 기준을 어떻게 정했는지 함께 적어 두어야 다른 사람이 결과를 믿을 수 있습니다.*
+
+**실전 2-7. 일곱 번의 비행에서 쓴 에너지**
+```
+
+import pandas as pd  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+kios \= pd.read\_csv(DATA \+ "kios\_flights.csv", sep\=";")  
+
+for n in range(1, 8):  
+    f \= kios\[kios\["flight"\] \=\= n\]  
+    power \= (f\["battery\_voltage"\] / 1000) \* (f\["battery\_current"\] / 1000)   \# 전력(W)  
+    seconds \= len(f) / 10                                                   \# 비행 시간(초)  
+    energy \= (power \* 0.1).sum() / 3600                                     \# 에너지(Wh)  
+    print(f"{n}번 비행: {seconds:6.0f}초, 평균 전력 {power.mean():4.0f} W, 에너지 {energy:6.1f} Wh")  
+```
+
+실행 결과
+
+1번 비행:    314초, 평균 전력  761 W, 에너지   66.4 Wh  
+2번 비행:    124초, 평균 전력  742 W, 에너지   25.7 Wh  
+3번 비행:    730초, 평균 전력  801 W, 에너지  162.3 Wh  
+4번 비행:    751초, 평균 전력  963 W, 에너지  200.9 Wh  
+5번 비행:   1857초, 평균 전력  807 W, 에너지  416.2 Wh  
+6번 비행:   1523초, 평균 전력  816 W, 에너지  345.1 Wh  
+7번 비행:    174초, 평균 전력  873 W, 에너지   42.1 Wh  
+전력에 시간을 곱하면 에너지입니다. 한 줄이 0.1초이므로 전력에 0.1을 곱해 모두 더하면 W·초가 되고, 3600으로 나누면 Wh가 됩니다. 0.1초마다 한 줄씩 기록되므로 줄 수를 10으로 나누면 비행 시간(초)입니다.
+
+오래 난 비행일수록 에너지를 많이 썼습니다. 그런데 평균 전력은 742 W에서 963 W 사이로, 비행 시간이 15배 차이 나는 것에 비하면 서로 비슷합니다. 예제 2-17에서 가상 드론으로 확인한 '떠 있는 것만으로 전기를 쓴다'는 사실이 실제 드론에서도 그대로 나타납니다. 다만 4번 비행은 다른 비행보다 평균 전력이 눈에 띄게 큽니다. 왜 그랬을지는 이 표만으로는 알 수 없습니다. 3-2에서 그래프로 그려 보면 실마리를 찾을 수 있습니다.
+
 
 ### **핵심 정리**
 
@@ -2746,6 +3021,128 @@ for speed, mark in \[(0.3, "o"), …\]는 튜플 리스트에서 속도와 점 �
    ***해 보기** 그래프 설명문 쓰기*
 
    *예제 3-7이 만든 그래프를 보고 위의 세 단계에 따라 설명문을 써 봅시다. 그리고 모둠원과 바꿔 읽으며 '근거와 한계' 부분이 빠지지 않았는지 서로 확인합니다.*
+
+### **■ 7\. 실제 데이터로 해 보기: 실제 기록을 그래프로**
+
+2-3과 2-4에서 숫자로만 살펴본 실제 데이터를 그래프로 그려 봅니다. 숫자로 볼 때는 보이지 않던 것이 드러납니다.
+
+**실전 3-1. 높이와 전류를 위아래로 나란히**
+```
+
+import pandas as pd  
+import matplotlib.pyplot as plt  
+import font\_setup  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+kios \= pd.read\_csv(DATA \+ "kios\_flights.csv", sep\=";")  
+f7 \= kios\[kios\["flight"\] \=\= 7\].copy()  
+f7\["시간"\] \= (f7\["seq"\] \- f7\["seq"\].min()) / 10  
+f7\["전류"\] \= f7\["battery\_current"\] / 1000  
+
+fig, ax \= plt.subplots(2, 1, figsize\=(7, 4.5), sharex\=True)   \# 위아래 두 칸, 가로축은 함께 쓰기  
+ax\[0\].plot(f7\["시간"\], f7\["position\_z"\], color\="\#4f56a8")  
+ax\[0\].set\_ylabel("높이 (m)")  
+ax\[0\].set\_title("실제 드론의 7번 비행: 높이와 전류")  
+ax\[1\].plot(f7\["시간"\], f7\["전류"\], color\="\#c2410c")  
+ax\[1\].set\_ylabel("전류 (A)")  
+ax\[1\].set\_xlabel("시간 (초)")  
+plt.tight\_layout()  
+plt.savefig("real\_flight.png", dpi\=150)  
+plt.show()  
+
+top \= f7.loc\[f7\["전류"\].idxmax()\]  
+print(f"전류가 가장 컸던 때: {top\['시간'\]:.1f}초, {top\['전류'\]:.1f} A, 높이 {top\['position\_z'\]:.1f} m")  
+```
+
+실행 결과
+
+전류가 가장 컸던 때: 16.6초, 27.4 A, 높이 41.2 m  
+plt.subplots(2, 1)은 그림 칸을 위아래 두 개로 나눕니다. ax\[0\]이 위 칸, ax\[1\]이 아래 칸입니다. sharex=True는 두 칸이 가로축(시간)을 함께 쓰게 해, 같은 순간의 높이와 전류를 위아래로 견주어 볼 수 있게 합니다.
+
+위 칸을 보면 드론은 약 25초 동안 63 m까지 올라가 80초쯤 머문 뒤 내려왔습니다. 아래 칸의 전류는 모양이 다릅니다. 올라가는 동안 27 A까지 치솟았다가, 높이가 일정한 동안에는 22 A 안팎으로 거의 평평합니다. 올라갈 때 전기를 가장 많이 쓰고, 가만히 떠 있을 때에도 꽤 많은 전기를 계속 쓴다는 것을 한눈에 알 수 있습니다. 실전 2-5의 표에서 전류의 가운데값이 22.4 A였던 까닭이 이 평평한 구간입니다.
+
+**실전 3-2. 튀는 값을 눈으로 확인하기**
+```
+
+import pandas as pd  
+import matplotlib.pyplot as plt  
+import font\_setup  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+kios \= pd.read\_csv(DATA \+ "kios\_flights.csv", sep\=";")  
+f7 \= kios\[kios\["flight"\] \=\= 7\].copy()  
+f7\["시간"\] \= (f7\["seq"\] \- f7\["seq"\].min()) / 10  
+
+plt.figure(figsize\=(7, 3))  
+plt.plot(f7\["시간"\], f7\["wind\_speed"\], linewidth\=0.8, color\="\#4f56a8")  
+plt.axhline(f7\["wind\_speed"\].median(), color\="\#c2410c", linestyle\="\-\-", label\="중앙값")  
+plt.title("7번 비행: 기체에 단 풍속계의 값")  
+plt.xlabel("시간 (초)")  
+plt.ylabel("풍속 (m/s)")  
+plt.legend()  
+plt.tight\_layout()  
+plt.savefig("real\_wind.png", dpi\=150)  
+plt.show()  
+print("그래프를 real\_wind.png 로 저장했습니다.")  
+```
+
+실행 결과
+
+그래프를 real\_wind.png 로 저장했습니다.  
+대부분의 값은 5 m/s 근처에 모여 있고, 군데군데 바늘처럼 솟은 곳이 보입니다. 실전 2-6에서 숫자로 찾아낸 '20 m/s를 넘는 100줄'이 바로 이 바늘들입니다. plt.axhline()은 가로로 선을 긋는 함수로, 중앙값의 자리에 점선을 그었습니다. 중앙값의 선이 값들이 모여 있는 곳을 지나는 것을 볼 수 있습니다.
+
+숫자로는 '최댓값 40.3'이라는 한 줄이었지만, 그래프로 보면 튀는 값이 언제, 얼마나 자주 나타났는지까지 보입니다.
+
+**실전 3-3. 드론 비행승인 신청의 흐름**
+```
+
+import pandas as pd  
+import matplotlib.pyplot as plt  
+import font\_setup  
+
+DATA \= "https://raw.githubusercontent.com/ralralra/dronebook/main/data/"  
+
+minwon \= pd.read\_excel(DATA \+ "drone\_minwon.xlsx", header\=1)  
+minwon.columns \= \["연월", "기체신고", "사업등록", "비행승인", "촬영허가", "원스톱"\]  
+minwon \= minwon.dropna(subset\=\["비행승인"\])  
+minwon\["연도"\] \= minwon\["연월"\].str\[:4\].astype(int)  
+minwon\["월"\] \= minwon\["연월"\].str\[5:\].str.replace("월", "").astype(int)   \# "2020년 8월" → 8  
+
+fig, ax \= plt.subplots(1, 2, figsize\=(9, 3.4))  
+ax\[0\].plot(range(len(minwon)), minwon\["비행승인"\], color\="\#4f56a8")  
+ax\[0\].set\_title("달마다 비행승인 신청 건수")  
+ax\[0\].set\_xlabel("2020년 8월부터 지난 달 수")  
+ax\[0\].set\_ylabel("신청 건수")  
+
+full \= minwon\[(minwon\["연도"\] \>\= 2021) & (minwon\["연도"\] \<\= 2024)\]      \# 열두 달이 모두 있는 해만  
+months \= list(range(1, 13))  
+means \= \[full\[full\["월"\] \=\= m\]\["비행승인"\].mean() for m in months\]  
+ax\[1\].bar(months, means, color\="\#c2410c")  
+ax\[1\].set\_title("월별 평균 (2021\~2024년)")  
+ax\[1\].set\_xlabel("월")  
+ax\[1\].set\_xticks(months)  
+plt.tight\_layout()  
+plt.savefig("real\_minwon.png", dpi\=150)  
+plt.show()  
+
+print("가장 많은 달:", months\[means.index(max(means))\], "월, 평균", round(max(means)), "건")  
+print("가장 적은 달:", months\[means.index(min(means))\], "월, 평균", round(min(means)), "건")  
+```
+
+실행 결과
+
+가장 많은 달: 10 월, 평균 17119 건  
+가장 적은 달: 1 월, 평균 8759 건  
+plt.subplots(1, 2)는 그림 칸을 좌우 두 개로 나눕니다. 왼쪽 꺾은선그래프는 오르내리면서도 전체로는 오른쪽 위를 향합니다. 실전 2-3에서 본 '해마다 늘었다'가 선의 기울기로 나타난 것입니다.
+
+왼쪽 그래프에는 규칙적인 골짜기도 보입니다. 오른쪽 막대그래프가 그 까닭을 알려 줍니다. 열두 달이 모두 있는 2021\~2024년만 골라 달마다 평균을 냈더니, 12월부터 2월까지가 낮고 10월이 가장 높습니다. 드론 비행은 계절을 탑니다. 춥고 바람이 센 겨울에는 신청이 줄고, 날씨가 좋은 봄과 가을에 늘어납니다. 2-4에서 배운 '기상이 비행에 미치는 영향'이 나라 전체의 통계에서도 드러난 것입니다.
+
+***짚고 가기** 그래프마다 답하는 질문이 다릅니다.*
+
+*꺾은선그래프는 '시간이 지나며 어떻게 변했는가'에, 막대그래프는 '어느 쪽이 더 큰가'에 답합니다(표 3-3). 같은 자료라도 무엇을 알고 싶은지에 따라 그래프를 골라야 합니다. 그리고 그래프가 보여 주는 것은 '함께 움직인다'는 사실까지입니다. 겨울에 신청이 줄어드는 까닭이 정말 날씨인지는 그래프만으로는 알 수 없습니다. 방학, 행사, 농사철 같은 다른 까닭도 있을 수 있습니다.*
+
 
 ### **핵심 정리**
 
@@ -4334,28 +4731,27 @@ for \~ else는 반복이 break 없이 끝났을 때만 else 부분을 실행합�
 
 표 부록-3. 성취기준과 소단원 대응표
 
-## **부록 5\. 실제 드론 데이터 연계 실습**
+## **부록 5\. 실제 드론 데이터의 출처**
 
-이 책의 드론 예제는 가상 드론의 계산식에서 나온 결과입니다. 실제 비행 기록에는 계산식에 없던 센서 잡음, 날씨, 기체마다 다른 특성이 섞여 있습니다. 연계 실습 노트(드론데이터\_실습\_v2.ipynb)는 공개된 실제 자료로 교재와 같은 분석을 해 보도록 만든 코랩 노트북입니다. 코드는 미리 준비되어 있어, 학생은 셀을 차례로 실행하며 결과를 해석하는 데 집중합니다.
+이 책의 드론 예제는 가상 드론의 계산식에서 나온 결과입니다. 실제 비행 기록에는 계산식에 없던 센서 잡음, 날씨, 기체마다 다른 특성이 섞여 있습니다. 그래서 2-3, 2-4, 3-2의 끝에 '실제 데이터로 해 보기'를 두어, 공개된 실제 자료로 교재와 같은 분석을 해 보도록 했습니다. 자료는 준비 셀이나 실전 코드가 인터넷에서 바로 읽으므로 따로 내려받지 않아도 됩니다.
 
-| 파트 | 자료 | 출처 | 이용 조건 | 연계 소단원 |
-| :---- | :---- | :---- | :---- | :---- |
-| 1 | 산업용 드론(DJI Matrice 300)의 실제 비행 기록 7회, 0.1초 간격 | Palamas, A. & Kolios, P. (2023). Drone onboard multi-modal sensor dataset. KIOS 연구센터(사이프러스대), Zenodo. doi:10.5281/zenodo.7643456 | CC BY 4.0 | 2-2, 3-2 |
-| 2 | 드론 운항 기록 552건 | Kaggle 'Supplemental Drone Telemetry Data & Operations Log'. 업체·기체 이름으로 보아 연습용으로 만든 자료로 보임 | Kaggle 페이지에서 확인 | 2-3 |
-| 3 | 배송 드론(DJI Matrice 100)의 실험 비행. 화물 0·250·500 g, 속도 4\~12 m/s, 높이 25\~100 m | Rodrigues, T. A. 외 (2020). Data Collected with Package Delivery Quadcopter Drone. 카네기멜런대. doi:10.1184/R1/12683453 | CC BY 4.0 | 2-4, 3-1, 3-2 |
-| 4 | 드론 원스톱 민원 신청 건수(2020년 8월\~2025년 6월, 월별) | 국토교통부 서울지방항공청, 공공데이터포털 | 이용허락범위 제한 없음 | 2-3, 3-2 |
+| 자료 | 출처 | 이용 조건 | 쓰는 곳 |
+| :---- | :---- | :---- | :---- |
+| 산업용 드론(DJI Matrice 300)의 실제 비행 기록 7회, 0.1초 간격. 원본의 32개 열 가운데 수업에 쓰는 6개 열만 골라 담았습니다(kios\_flights.csv). | Palamas, A. & Kolios, P. (2023). Drone onboard multi-modal sensor dataset. KIOS 연구센터(사이프러스대), Zenodo. doi:10.5281/zenodo.7643456 | CC BY 4.0 | 실전 2-4\~2-7, 실전 3-1, 3-2 |
+| 드론 원스톱 민원 신청 건수(2020년 8월\~2025년 6월, 월별). 내려받은 파일 그대로입니다(drone\_minwon.xlsx). | 국토교통부 서울지방항공청, 공공데이터포털 | 이용허락범위 제한 없음 | 실전 2-1\~2-3, 실전 3-3 |
+| 배송 드론(DJI Matrice 100)의 실험 비행. 화물 0·250·500 g, 속도 4\~12 m/s, 높이 25\~100 m | Rodrigues, T. A. 외 (2020). Data Collected with Package Delivery Quadcopter Drone. 카네기멜런대. doi:10.1184/R1/12683453 | CC BY 4.0 | 2-4의 '한 걸음 더' |
 
-표 부록-4. 연계 실습 노트에서 쓰는 자료
+표 부록-4. 이 책에서 쓰는 실제 자료
 
-### **■ 실습 노트에서 확인하는 주요 결과**
+### **■ 실제 자료에서 확인하는 주요 결과**
 
-* 파트 1: 7번 비행에서 전류는 올라가는 중에 가장 컸고(약 27 A), 63 m에 머무는 동안 22 A 안팎이었습니다. 풍속계에는 40 m/s까지 튀는 값이 섞여 있어, 평균(7.2 m/s)보다 중앙값(5.4 m/s)이 실제 바람에 가깝습니다.  
-* 파트 3: 화물이 250 g 늘 때마다 비행 1회 에너지가 약 2 Wh씩 늘었습니다(19.1 → 21.1 → 23.1 Wh). 속도는 10 m/s 근처에서 에너지가 가장 적었습니다(2-4의 '한 걸음 더').  
-* 파트 4: 비행승인 신청은 2021년 약 10만 9천 건에서 2024년 약 19만 9천 건으로 늘었고, 해마다 12\~2월에 적고 10월에 가장 많았습니다.
+* 실제 비행 기록: 7번 비행에서 전류는 올라가는 중에 가장 컸고(약 27 A), 63 m에 머무는 동안 22 A 안팎이었습니다. 풍속계에는 40 m/s까지 튀는 값이 섞여 있어, 평균(7.2 m/s)보다 중앙값(5.4 m/s)이 실제 바람에 가깝습니다.  
+* 배송 드론 실험: 화물이 250 g 늘 때마다 비행 1회 에너지가 약 2 Wh씩 늘었습니다(19.1 → 21.1 → 23.1 Wh). 속도는 10 m/s 근처에서 에너지가 가장 적었습니다(2-4의 '한 걸음 더').  
+* 민원 통계: 비행승인 신청은 2021년 약 10만 9천 건에서 2024년 약 19만 9천 건으로 늘었고, 해마다 12\~2월에 적고 10월에 가장 많았습니다.
 
   ***짚고 가기** CC BY 4.0이란?*
 
-  *저작자와 출처를 밝히면 복사·수정·배포를 자유롭게 할 수 있다는 이용 허락 표시입니다. 실습 결과를 보고서나 발표에 쓸 때도 위 표의 출처를 함께 적습니다. 2-3에서 배운 '출처와 이용 조건을 먼저 확인한다'를 실제로 지키는 방법입니다.*
+  *저작자와 출처를 밝히고 무엇을 바꾸었는지 적으면 복사·수정·배포를 자유롭게 할 수 있다는 이용 허락 표시입니다. 이 책이 비행 기록을 6개 열로 줄였다고 위 표에 적은 것도 이 조건을 지키기 위해서입니다. 실습 결과를 보고서나 발표에 쓸 때도 위 표의 출처를 함께 적습니다. 2-3에서 배운 '출처와 이용 조건을 먼저 확인한다'를 실제로 지키는 방법입니다.*
 
 [image1]: <data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkAAAAFaCAYAAAD2P+JWAAA69ElEQVR4Xu3dC7zVY77H8e43USmFNCSpSDJyHR3GDEJmnGJoYjIOJmbccqchZDAaHNeKMUmiOdEQpuRSpkQuJ+PaRAlJxEm6357z+j1e/zXr/9vPXnut3e/Zl7U+79fr+9J61n/tdj/P2s9v/2+rjgMAACgxdfQAAABAsaMBAgAAJYcGCAAAlBwaIAAAUHJogAAAQMmhAQIAACWHBggAAJQcGiAAAFByaIAAAEDJoQECAAAlhwYIAACUHBogAABQcmiAAABAyaEBAgAAJYcGCAAAlBwaIAAAUHJogAAAQMmhAUJJ6t69u/vlL3+ph6vdFVdc4fr27ev/PH36dFenju1b9PXXX3e77LKLHs6466678s69996rX25C/s2vvPKKHs44/vjjy9Rl5cqVrk+fPu6UU07xj+XfKdsccsghqe221HPPPed69uyphwsi39duu+2mh3M677zz3OWXX66H8/Loo4+WqVdlvPPOO2777bfXwxX65ptv3Keffuo2b96sn8oYOnSou/jii/VwysaNG90LL7zgrrzySvdf//Vf/v/1zTff7CZMmOC+/fZbvbn3f//3f5k5AWhb/q4AaiFZEPbcc089nNPkyZP9YpJP5s2bp1+esWTJEvePf/xDD3uHHXZYZrGqjgZI/r5806RJE/3yIPl3SLTPP//cj7///vupcfnahTZAy5cv92M77bSTf1zZBui9997L+XeX1wD97W9/K9MgZiebfF+FNkD169d3gwYNyjx+6623fO2WLVv2743c9wu+jL/55puZsVwNkNSyefPm5SZboQ2Q/P89/fTTM/OlWbNm5dY2VwO0Zs0aN2TIENeuXbvU/KtXr17mz40bNw6+5zZt2uS6devmG2RAC78rgCInPzQbNWrkvvzyS/1UuaRxyP4BnCu33367frknP8hlMZNtjjnmmDK/uRbaAL399tuuV69eqYwePbrM+G9+8xu/fUUNkCxQ+US+r3wboKQm2siRI/24/g1dxrIXyv/93/91N910UyZ77LGH3yZ7TP4/ytiWNkA//elPg99rorwGKHldeckmjyvTAM2fPz/zOPn7pPHKJt+fjB944IGZsVwN0KWXXurnnI7UUb+mkAZIGnxpoORrDBgwwO+x+eEPf+gfjxo1Sm+eswGS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81i+zgEHHJC1hXOff/556nEhJ4ADiI93I4AoJk+e7B599NFUhg0b5psAPZ5EDj0lpAFKmpJcGTNmTNbfWpbsedGkAdq4cWNqTL5Wr169UmNjx451l156aWpMSLMje48S3333nevcubPfy1We5DwgADUD70YAUeyyyy5lmpWKkr3HZ9asWW7kyJGZjBgxwh100EGpMcm8efOy/tay5NCUJg2QJn//IYcckhqTy+x//etfp8aWLFniD5E9/fTTqXF5fffu3X3TFLraS85/ogECag7ejQCi+eKLL/JKPuR+O5W5muvkk0/WQ3k3QM8991yZv1MOnfXr1y81lpBznG6++WZ/7pDsJco+GVpuA0ADBNQcvBsBRNOgQYMye3lCyecePZVtgI488kg9tEUNkJzoLCdw5yL/Hvl648ePz4zJIUEaIKDm4N0IIJqpU6eWuXOzzv777x+1AWrfvr0e2qIGKN+7P8vXu/766zOPb7zxRhogoAbh3QigWvXt2zfVAA0fPtydcMIJBUVuSlgeaToee+yx1FhlGyA5cfpPf/pT1hbfk+3k9fJ15d5GLVq0SJ0kLZf4y2GxU089NetVAKoTDRCAaqUbIGtyz58BAwakxkKXtt91111lGqVPP/3UNzeJ6dOnl3v3Z7mh4+9//3t/1dnll1+eem7GjBm+QZI9XgBqBhogANUqdgMkh6GaN2/uVq1apZ8q2IUXXqiH8jJ48GB/KE7f7BFA9aEBAlCtct07x4J89pg0QLfccot+qmC77rqrHspL06ZN3R//+Ec9DKAa0QABKHpyo0K5CmtLfPvtt5nPMiuUXAIPoGahAQIAACWHBggAAJQcGiAAAFByaIAAAEDJoQECAAAlhwYIAACUHBogAABQcmiAAABAyaEBAgAAJYcGCAAAlBwaIAAAUHJogAAAQMmhAQIAACWHBggAAJQcGiAAAFByaIAAAEDJoQECAAAl5/8B6RDuRgCg62AAAAAASUVORK5CYII=>
 
